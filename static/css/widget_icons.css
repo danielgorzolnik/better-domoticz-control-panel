@@ -1,0 +1,35 @@
+.lampOn {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ffd324;
+}
+
+.lampOff {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ffffff;
+}
+
+.socketOn {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ba0000;
+}
+
+.socketOff {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ffffff;
+}
+
+.tvOn {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #005aad;
+}
+
+.tvOff {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ffffff;
+}

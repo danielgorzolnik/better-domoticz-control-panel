@@ -1,0 +1,40 @@
+﻿<html stye>
+<head>
+    <meta charset="UTF-8" />
+    <title>BDCP - Desktop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/widget_icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div id="mainRow" class="row">
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
+
+    <script id="lightTemplate" type="text/template">
+        <div class="col-lg-4">
+            <div class="card" id="tempIdx" onclick="clickLightElement(this)">
+                <ul class="list-inline">
+                    <i class="tempIcon" aria-hidden="true"></i>
+                    <li class="name">tempName</li>
+                </ul>
+                <div class="status">
+                    <h3>tempStatus</h3>
+                </div>
+                <div class="date">
+                    <p>tempDate</p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+</body>
+</html>
