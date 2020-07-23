@@ -70,3 +70,10 @@ class DomoticzCommuniucation:
     data = self.connector.sendAndReceiveData(url)
     if data: return True
     else: return False
+
+  def changeDimmer(self, idx, value):
+    url = 'type=command&param=switchlight&idx=%d&switchcmd=Set Level&level=%d' % (idx, value)
+    url = url.replace(' ', '%20')
+    data = self.connector.sendAndReceiveData(url)
+    if data: return True
+    else: return False

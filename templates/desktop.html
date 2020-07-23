@@ -21,13 +21,35 @@
 
     <script id="lightTemplate" type="text/template">
         <div class="col-lg-4">
-            <div class="card" id="tempIdx" onclick="clickLightElement(this)">
+            <div class="card card_react" id="tempIdx">
                 <ul class="list-inline">
                     <i class="tempIcon" aria-hidden="true"></i>
                     <li class="name">tempName</li>
                 </ul>
                 <div class="status">
                     <h3>tempStatus</h3>
+                </div>
+                <div class="date">
+                    <p>tempDate</p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="dimmerTemplate" type="text/template">
+        <div class="col-lg-4">
+            <div class="card" id="tempIdx" onclick="">
+                <ul class="list-inline">
+                    <i class="tempIcon" aria-hidden="true"></i>
+                    <li class="name">tempName</li>
+                </ul>
+                <div class="status">
+                    <h3>tempStatus</h3>
+                </div>
+                <div class="slider">
+                    <div class="range-slider">
+                        <input id="tempSliderIdx" class="range-slider__range" type="range" value="50" min="0" max="100">
+                    </div>
                 </div>
                 <div class="date">
                     <p>tempDate</p>

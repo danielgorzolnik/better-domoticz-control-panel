@@ -10,12 +10,12 @@
 }
 
 @media(hover: hover) and (pointer: fine) {
-    .card:hover {
+    .card_react:hover {
         background-color: rgba(50, 50, 50, 0.8);
     }
 }
 
-.card:active {
+.card_react:active {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -54,6 +54,16 @@
     font-size: 12px;
 }
 
+.card .slider {
+    position: absolute;
+    right: 10px;
+    top: 55px;
+    text-align: right;
+    color: white;
+    font-size: 12px;
+    width: 65%;
+}
+
 .list-inline {
     margin-bottom: 0 !important;
 }
@@ -61,3 +71,30 @@
 h3 {
     margin: 0 !important;
 }
+  
+  .range-slider {
+    width: 100%;
+  }
+  
+  .range-slider__range {
+    -webkit-appearance: none;
+    width: calc(100% - (10px));
+    height: 5px;
+    border-radius: 5px;
+    background: #ffd09a;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .range-slider__range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+            appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-transition: background 0.15s ease-in-out;
+    transition: background 0.15s ease-in-out;
+  }

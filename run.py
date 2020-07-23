@@ -32,5 +32,11 @@ def clickDeviceLight(data):
   domoticz.switchLight(int(data['idx']), True if data['state'] == 'On' else False)
   getStatusOfFavoriteDevicesLight() #send updated statuses
 
+@socketio.on('changeDimmer', namespace='/desktop')
+def changeDimmer(data):
+  print(data)
+  domoticz.changeDimmer(int(data['idx']), int(data['level']))
+  getStatusOfFavoriteDevicesLight() #send updated statuses
+
 if __name__ == '__main__':
   socketio.run(app, host='0.0.0.0', port=81)
