@@ -24,6 +24,9 @@ function setIcon(idx, name) {
         case 'Motion Sensor':
             classes = 'fa fa-eye fa-3x'
             break
+        case 'Speaker':
+            classes = 'fa fa-volume-up fa-3x'
+            break
         default:
             classes = 'fa fa-minus-square-o fa-3x'
             break;
@@ -45,6 +48,9 @@ function setState(idx, name, state) {
             break;
         case 'Motion Sensors':
             classBase = 'motion'
+            break;
+        case 'Speaker':
+            classBase = 'speaker'
             break;
         default:
             classBase = 'lamp'
