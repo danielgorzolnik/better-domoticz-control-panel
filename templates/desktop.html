@@ -40,7 +40,7 @@
     <script id="dimmerTemplate" type="text/template">
         <div class="col-lg-4">
             <div class="card card_react_noclick" id="tempIdx" onclick="">
-                <p style="display: none;">aaaaa</p>
+                <p style="display: none;"></p>
                 <ul class="list-inline">
                     <i id="tempIconIdx" aria-hidden="true"></i>
                     <li class="name">tempName</li>
@@ -52,6 +52,28 @@
                     <div class="range-slider">
                         <input id="tempSliderIdx" class="range-slider__range" type="range" value="50" min="0" max="100">
                     </div>
+                </div>
+                <div class="date">
+                    <p>tempDate</p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="blindTemplate" type="text/template">
+        <div class="col-lg-4">
+            <div class="card card_react_noclick" id="tempIdx">
+                <ul class="list-inline">
+                    <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
+                    <li class="name">tempName</li>
+                </ul>
+                <div class="status">
+                    <h3>tempStatus</h3>
+                </div>
+                <div class="buttons">
+                    <button id="tempDownIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-down fa-2x" style="color: white" aria-hidden="true"></i></button>
+                    <button id="tempStopIdx" class="btn no_background" type="submit"><i class="fa fa-stop fa-2x" style="color: white" aria-hidden="true"></i></button>
+                    <button id="tempUpIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-up fa-2x" style="color: white" aria-hidden="true"></i></button>
                 </div>
                 <div class="date">
                     <p>tempDate</p>

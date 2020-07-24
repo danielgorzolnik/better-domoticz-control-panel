@@ -77,3 +77,13 @@ class DomoticzCommuniucation:
     data = self.connector.sendAndReceiveData(url)
     if data: return True
     else: return False
+
+  def changeCover(self, idx, state):
+    print(state)
+    if state == 'up': state = 'Off'
+    elif state == 'stop': state = 'Stop'
+    elif state == 'down': state = 'On'
+    url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
+    data = self.connector.sendAndReceiveData(url)
+    if data: return True
+    else: return False

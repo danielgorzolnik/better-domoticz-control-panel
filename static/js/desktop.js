@@ -1,3 +1,44 @@
+//section for blind element
+
+function addBlindElement(object){
+    var template = $('#blindTemplate').html();
+    template = template.replace("tempName", object['Name']);
+    template = template.replace("tempStatus", object['Status']);
+    template = template.replace("tempDate", object['LastUpdate']);
+    template = template.replace("tempIdx", object['idx']);
+    template = template.replace("tempIconIdx", 'icon' + object['idx']);
+    template = template.replace("tempDownIdx", 'down' + object['idx']);
+    template = template.replace("tempStopIdx", 'stop' + object['idx']);
+    template = template.replace("tempUpIdx", 'up' + object['idx']);
+    $('#mainRow').append(template);
+    setIcon(object['idx'], object['SwitchType'], object['Status']);
+    $('#down' + object['idx'].toString()).bind('click', function() { //down
+        clickBlindElement($(this), 'down');
+    });
+    $('#stop' + object['idx'].toString()).bind('click', function() { //stop
+        clickBlindElement($(this), 'stop');
+    });
+    $('#up' + object['idx'].toString()).bind('click', function() { //up
+        clickBlindElement($(this), 'up');
+    });
+}
+
+function clickBlindElement(object, direction){
+    let id;
+    if (direction == 'up') id = $(object).attr('id').substring(2);
+    else id = $(object).attr('id').substring(4);
+    window.socket.emit('clickBlind', { 'idx': id, 'state': direction});
+}
+
+function updateBlindElement(object){
+    if ($('#' + object['idx']).find('.status').children().html() != object['Status']) {
+        $('#' + object['idx']).find('.status').children().html(object['Status']);
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
+    }
+}
+
+//------------------------------------------
+
 //section for dimmer element
 function addDimmerElement(object) {
     var template = $('#dimmerTemplate').html();
@@ -100,6 +141,9 @@ function elementCreator(object){
     else if (object['SwitchType'] == 'Dimmer'){
         addDimmerElement(object);
     }
+    else if (object['SwitchType'] == 'Blinds'){
+        addBlindElement(object);
+    }
 }
 
 function elementUpdater(object){
@@ -108,6 +152,9 @@ function elementUpdater(object){
     }
     else if (object['SwitchType'] == 'Dimmer'){
         updateDimmerElement(object);
+    }
+    else if (object['SwitchType'] == 'Blinds'){
+        updateBlindElement(object);
     }
 }
 

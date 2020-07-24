@@ -67,6 +67,16 @@
     width: 65%;
 }
 
+.card .buttons {
+    position: absolute;
+    right: 0px;
+    top: 35px;
+    text-align: right;
+    color: white;
+    font-size: 12px;
+    width: 65%;
+}
+
 .list-inline {
     margin-bottom: 0 !important;
 }

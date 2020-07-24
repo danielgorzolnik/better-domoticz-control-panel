@@ -1,9 +1,9 @@
 function setIconSetState(idx, name, state){
-    setIcon(idx, name, state);
+    setIcon(idx, name);
     setState(idx, name, state);
 }
 
-function setIcon(idx, name, state) {
+function setIcon(idx, name) {
     let classes;
     switch (name) {
         case 'Light': 
@@ -14,6 +14,9 @@ function setIcon(idx, name, state) {
             break;
         case 'TV':
             classes = 'fa fa-television fa-3x'
+            break;
+        case 'Blinds':
+            classes = 'fa fa-align-justify fa-3x'
             break;
         default:
             classes = 'fa fa-minus-square-o fa-3x'
