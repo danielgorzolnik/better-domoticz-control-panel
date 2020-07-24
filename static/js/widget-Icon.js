@@ -21,6 +21,9 @@ function setIcon(idx, name) {
         case 'temperature':
             classes = 'fa fa-thermometer-half fa-3x'
             break
+        case 'Motion Sensor':
+            classes = 'fa fa-eye fa-3x'
+            break
         default:
             classes = 'fa fa-minus-square-o fa-3x'
             break;
@@ -39,6 +42,9 @@ function setState(idx, name, state) {
             break;
         case 'TV':
             classBase = 'tv'
+            break;
+        case 'Motion Sensors':
+            classBase = 'motion'
             break;
         default:
             classBase = 'lamp'

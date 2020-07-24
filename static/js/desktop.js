@@ -1,7 +1,30 @@
 //section for temperature element
 
+function addMotionSensor(object){
+    var template = $('#sensorTemplate').html();
+    template = template.replace("tempName", object['Name']);
+    template = template.replace("tempStatus", object['Status']);
+    template = template.replace("tempDate", object['LastUpdate']);
+    template = template.replace("tempIdx", object['idx']);
+    template = template.replace("tempIconIdx", 'icon' + object['idx']);
+    $('#switchRow').append(template);
+    setIconSetState(object['idx'], object['SwitchType'], object['Status']);
+}
+
+function updateMotionSensor(object){
+    if ($('#' + object['idx']).find('.status').children().html() != object['Data']) {
+        $('#' + object['idx']).find('.status').children().html(object['Data']);
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
+        setState(object['idx'], object['SwitchType'], object['Status'])
+    }
+}
+
+//------------------------------------------
+
+//section for temperature element
+
 function addTemperatureElement(object){
-    var template = $('#temperatureTemplate').html();
+    var template = $('#sensorTemplate').html();
     template = template.replace("tempName", object['Name']);
     sensorData = object['Data'].replace("C", "°C").replace(",", " ").replace(",", " ");
     template = template.replace("tempStatus", sensorData);
@@ -168,6 +191,9 @@ function elementCreator(object){
     else if (object['SwitchType'] == 'Blinds'){
         addBlindElement(object);
     }
+    else if (object['SwitchType'] == 'Motion Sensor'){
+        addMotionSensor(object);
+    }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp'))
         addTemperatureElement(object);
@@ -183,6 +209,9 @@ function elementUpdater(object){
     }
     else if (object['SwitchType'] == 'Blinds'){
         updateBlindElement(object);
+    }
+    else if (object['SwitchType'] == 'Motion Sensor'){
+        updateMotionSensor(object);
     }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp'))
