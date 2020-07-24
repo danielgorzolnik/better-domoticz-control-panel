@@ -10,7 +10,9 @@
 </head>
 <body>
     <div class="container">
-        <div id="mainRow" class="row">
+        <div id="switchRow" class="row">
+        </div>
+        <div id="sensorRow" class="row" style="margin-top: 50px">
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
@@ -19,7 +21,7 @@
     <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
     <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
     <script src="{{ url_for('static', filename='js/widget-icon.js') }}"></script>
-
+    <!-- LIGHT -->
     <script id="lightTemplate" type="text/template">
         <div class="col-lg-4">
             <div class="card card_react" id="tempIdx">
@@ -36,7 +38,7 @@
             </div>
         </div>
     </script>
-
+    <!-- DIMMER -->
     <script id="dimmerTemplate" type="text/template">
         <div class="col-lg-4">
             <div class="card card_react_noclick" id="tempIdx" onclick="">
@@ -59,7 +61,7 @@
             </div>
         </div>
     </script>
-
+    <!-- BLINDS -->
     <script id="blindTemplate" type="text/template">
         <div class="col-lg-4">
             <div class="card card_react_noclick" id="tempIdx">
@@ -74,6 +76,23 @@
                     <button id="tempDownIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-down fa-2x" style="color: white" aria-hidden="true"></i></button>
                     <button id="tempStopIdx" class="btn no_background" type="submit"><i class="fa fa-stop fa-2x" style="color: white" aria-hidden="true"></i></button>
                     <button id="tempUpIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-up fa-2x" style="color: white" aria-hidden="true"></i></button>
+                </div>
+                <div class="date">
+                    <p>tempDate</p>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- TEMPERATURE -->
+    <script id="temperatureTemplate" type="text/template">
+        <div class="col-lg-4">
+            <div class="card card_react_noclick" id="tempIdx">
+                <ul class="list-inline">
+                    <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
+                    <li class="name">tempName</li>
+                </ul>
+                <div class="status">
+                    <h3>tempStatus</h3>
                 </div>
                 <div class="date">
                     <p>tempDate</p>

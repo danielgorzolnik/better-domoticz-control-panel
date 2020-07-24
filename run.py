@@ -17,10 +17,20 @@ def home():
   else: 
     return render_template('offline.html')
 
+@socketio.on('getStatusOfFavoriteDevicesTemp', namespace='/desktop')
+def getStatusOfFavoriteDevicesTemp():
+  data = domoticz.getStatusOfFavoriteDevicesTemp()
+  emit('getTempDevice', {'data': json.dumps(data)})
+
 @socketio.on('getStatusOfFavoriteDevicesLight', namespace='/desktop')
 def getStatusOfFavoriteDevicesLight():
   data = domoticz.getStatusOfFavoriteDevicesLight()
   emit('getLightDevice', {'data': json.dumps(data)})
+
+@socketio.on('updateStatusOfFavoriteDevicesTemp', namespace='/desktop')
+def getStatusOfFavoriteDevicesTemp():
+  data = domoticz.getStatusOfFavoriteDevicesTemp()
+  emit('updateTempDevice', {'data': json.dumps(data)})
 
 @socketio.on('updateStatusOfFavoriteDevicesLight', namespace='/desktop')
 def getStatusOfFavoriteDevicesLight():

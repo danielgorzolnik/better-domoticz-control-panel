@@ -18,6 +18,9 @@ function setIcon(idx, name) {
         case 'Blinds':
             classes = 'fa fa-align-justify fa-3x'
             break;
+        case 'temperature':
+            classes = 'fa fa-thermometer-half fa-3x'
+            break
         default:
             classes = 'fa fa-minus-square-o fa-3x'
             break;

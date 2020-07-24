@@ -1,3 +1,27 @@
+//section for temperature element
+
+function addTemperatureElement(object){
+    var template = $('#temperatureTemplate').html();
+    template = template.replace("tempName", object['Name']);
+    sensorData = object['Data'].replace("C", "°C").replace(",", " ").replace(",", " ");
+    template = template.replace("tempStatus", sensorData);
+    template = template.replace("tempDate", object['LastUpdate']);
+    template = template.replace("tempIdx", object['idx']);
+    template = template.replace("tempIconIdx", 'icon' + object['idx']);
+    $('#sensorRow').append(template);
+    setIcon(object['idx'], object['TypeImg']);
+}
+
+function updateTemperatureElement(object){
+    sensorData = object['Data'].replace("C", "°C").replace(",", " ").replace(",", " ");
+    if ($('#' + object['idx']).find('.status').children().html() != sensorData) {
+        $('#' + object['idx']).find('.status').children().html(sensorData);
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
+    }
+}
+
+//------------------------------------------
+
 //section for blind element
 
 function addBlindElement(object){
@@ -10,7 +34,7 @@ function addBlindElement(object){
     template = template.replace("tempDownIdx", 'down' + object['idx']);
     template = template.replace("tempStopIdx", 'stop' + object['idx']);
     template = template.replace("tempUpIdx", 'up' + object['idx']);
-    $('#mainRow').append(template);
+    $('#switchRow').append(template);
     setIcon(object['idx'], object['SwitchType'], object['Status']);
     $('#down' + object['idx'].toString()).bind('click', function() { //down
         clickBlindElement($(this), 'down');
@@ -50,7 +74,7 @@ function addDimmerElement(object) {
     
     if (object['Status'] == 'Off') template = template.replace("tempStatus", object['Status']);
     else template = template.replace("tempStatus", object['Level'].toString() + '%');
-    $('#mainRow').append(template);
+    $('#switchRow').append(template);
     setIconSetState(object['idx'], object['Image'], object['Status'])
     if (object['Status'] == 'Off') $('#slider'+ object['idx'].toString()).val(0);
     else $('#slider'+ object['idx'].toString()).val(object['Level']);
@@ -104,7 +128,7 @@ function addLightElement(object) {
     template = template.replace("tempDate", object['LastUpdate'])
     template = template.replace("tempIdx", object['idx'])
     template = template.replace("tempIconIdx", 'icon' + object['idx'])
-    $('#mainRow').append(template);
+    $('#switchRow').append(template);
     setIconSetState(object['idx'], object['Image'], object['Status'])
     $('#' + object['idx'].toString()).bind('click', function() {
         clickLightElement($(this))
@@ -144,6 +168,10 @@ function elementCreator(object){
     else if (object['SwitchType'] == 'Blinds'){
         addBlindElement(object);
     }
+    else if (object['Type']){
+        if (object['Type'].startsWith('Temp'))
+        addTemperatureElement(object);
+    }
 }
 
 function elementUpdater(object){
@@ -155,6 +183,10 @@ function elementUpdater(object){
     }
     else if (object['SwitchType'] == 'Blinds'){
         updateBlindElement(object);
+    }
+    else if (object['Type']){
+        if (object['Type'].startsWith('Temp'))
+        updateTemperatureElement(object);
     }
 }
 
@@ -169,7 +201,17 @@ $(document).ready(function () {
         data.forEach(elementCreator);
     });
 
+    window.socket.on('getTempDevice', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        data.forEach(elementCreator);
+    });
+
     window.socket.on('updateLightDevice', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        data.forEach(elementUpdater);
+    });
+
+    window.socket.on('updateTempDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
         data.forEach(elementUpdater);
     });
@@ -178,8 +220,13 @@ $(document).ready(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesLight')
     }, 2000);
 
-    window.socket.emit('getStatusOfFavoriteDevicesLight')
+    setInterval(function () {
+        window.socket.emit('updateStatusOfFavoriteDevicesTemp')
+    }, 5000);
 
+    window.socket.emit('getStatusOfFavoriteDevicesLight')
+    window.socket.emit('getStatusOfFavoriteDevicesTemp')
+    
     $(document).on('input', '#slider', function() {
         console.log( $(this).val() );
     });

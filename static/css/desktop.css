@@ -40,12 +40,17 @@
     bottom: 0px;
 }
 
+.card h3 {
+    font-size: 26px;;
+}
+
 .card .status {
     position: absolute;
     right: 10px;
     top: 0px;
     text-align: right;
     color: white;
+    font-size: 10px;
 }
 
 .card .date {
