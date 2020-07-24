@@ -13,6 +13,9 @@
     .card_react:hover {
         background-color: rgba(50, 50, 50, 0.8);
     }
+    .card_react_noclick:hover {
+        background-color: rgba(50, 50, 50, 0.8);
+    }
 }
 
 .card_react:active {

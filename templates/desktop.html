@@ -18,12 +18,13 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
     <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/widget-icon.js') }}"></script>
 
     <script id="lightTemplate" type="text/template">
         <div class="col-lg-4">
             <div class="card card_react" id="tempIdx">
                 <ul class="list-inline">
-                    <i class="tempIcon" aria-hidden="true"></i>
+                    <i id="tempIconIdx" aria-hidden="true"></i>
                     <li class="name">tempName</li>
                 </ul>
                 <div class="status">
@@ -38,9 +39,10 @@
 
     <script id="dimmerTemplate" type="text/template">
         <div class="col-lg-4">
-            <div class="card" id="tempIdx" onclick="">
+            <div class="card card_react_noclick" id="tempIdx" onclick="">
+                <p style="display: none;">aaaaa</p>
                 <ul class="list-inline">
-                    <i class="tempIcon" aria-hidden="true"></i>
+                    <i id="tempIconIdx" aria-hidden="true"></i>
                     <li class="name">tempName</li>
                 </ul>
                 <div class="status">

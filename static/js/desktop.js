@@ -1,31 +1,18 @@
 //section for dimmer element
 function addDimmerElement(object) {
-    console.log(object)
     var template = $('#dimmerTemplate').html();
     template = template.replace("tempName", object['Name'])
     template = template.replace("tempDate", object['LastUpdate'])
     template = template.replace("tempIdx", object['idx'])
     template = template.replace("tempSliderIdx", 'slider' + object['idx'.toString()])
+    template = template.replace("tempIconIdx", 'icon' + object['idx'.toString()])
     
-    if (object['Status'] == 'Off') {
-        template = template.replace("tempStatus", object['Status'])
-        if (object['Image'] == "Light") template = template.replace("tempIcon", 'fa fa-lightbulb-o fa-3x lampOff')
-        else if (object['Image'] == "WallSocket") template = template.replace("tempIcon", 'fa fa-plug fa-3x socketOff')
-        else if (object['Image'] == "TV") template = template.replace("tempIcon", 'fa fa-television fa-3x tvOff')
-    } 
-    else {
-        template = template.replace("tempStatus", object['Level'].toString() + '%')
-        if (object['Image'] == "Light") template = template.replace("tempIcon", 'fa fa-lightbulb-o fa-3x lampOn')
-        else if (object['Image'] == "WallSocket") template = template.replace("tempIcon", 'fa fa-plug fa-3x socketOn')
-        else if (object['Image'] == "TV") template = template.replace("tempIcon", 'fa fa-television fa-3x tvOn')
-    }
+    if (object['Status'] == 'Off') template = template.replace("tempStatus", object['Status']);
+    else template = template.replace("tempStatus", object['Level'].toString() + '%');
     $('#mainRow').append(template);
-    if (object['Status'] == 'Off') {
-        $('#slider'+ object['idx'].toString()).val(0);
-    }
-    else {
-        $('#slider'+ object['idx'].toString()).val(object['Level']);
-    }
+    setIconSetState(object['idx'], object['Image'], object['Status'])
+    if (object['Status'] == 'Off') $('#slider'+ object['idx'].toString()).val(0);
+    else $('#slider'+ object['idx'].toString()).val(object['Level']);
     $('#' + object['idx'].toString()).on('click', function() {
         clickDimmerElement($(this));
     });
@@ -48,21 +35,21 @@ function clickDimmerElement(object) {
 }
 
 function updateDimmerElement(object){
-    if (object['Status'] == 'Off') {
-        $('#slider'+ object['idx'].toString()).val(0);
-        if (object['Image'] == "Light") {
-            $('#' + object['idx']).find('i').removeClass('lampOn');
-            $('#' + object['idx']).find('i').addClass('lampOff');
+    parent = $('#'+ object['idx'].toString())
+    if (parent.find('p').html() != object['Status'])
+    {
+        parent.find('p').html(object['Status'])
+        if (object['Status'] == 'Off') {
+            $('#slider'+ object['idx'].toString()).val(0);
+            setState(object['idx'], object['Image'], 'Off');
+            $('#' + object['idx']).find('.status').children().html('Off')
         }
-        $('#' + object['idx']).find('.status').children().html('Off')
-    }
-    else {
-        $('#slider'+ object['idx'].toString()).val(object['Level']);
-        if (object['Image'] == "Light") {
-            $('#' + object['idx']).find('i').removeClass('lampOff');
-            $('#' + object['idx']).find('i').addClass('lampOn');
+        else {
+            $('#slider'+ object['idx'].toString()).val(object['Level']);
+            setState(object['idx'], object['Image'], 'On');
+            $('#' + object['idx']).find('.status').children().html(object['Level'].toString() + '%')
         }
-        $('#' + object['idx']).find('.status').children().html(object['Level'].toString() + '%')
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate'])
     }
 }
 
@@ -75,17 +62,9 @@ function addLightElement(object) {
     template = template.replace("tempStatus", object['Status'])
     template = template.replace("tempDate", object['LastUpdate'])
     template = template.replace("tempIdx", object['idx'])
-    if (object['Status'] == 'On') {
-        if (object['Image'] == "Light") template = template.replace("tempIcon", 'fa fa-lightbulb-o fa-3x lampOn')
-        else if (object['Image'] == "WallSocket") template = template.replace("tempIcon", 'fa fa-plug fa-3x socketOn')
-        else if (object['Image'] == "TV") template = template.replace("tempIcon", 'fa fa-television fa-3x tvOn')
-    }
-    else {
-        if (object['Image'] == "Light") template = template.replace("tempIcon", 'fa fa-lightbulb-o fa-3x lampOff')
-        else if (object['Image'] == "WallSocket") template = template.replace("tempIcon", 'fa fa-plug fa-3x socketOff')
-        else if (object['Image'] == "TV") template = template.replace("tempIcon", 'fa fa-television fa-3x tvOff')
-    } 
+    template = template.replace("tempIconIdx", 'icon' + object['idx'])
     $('#mainRow').append(template);
+    setIconSetState(object['idx'], object['Image'], object['Status'])
     $('#' + object['idx'].toString()).bind('click', function() {
         clickLightElement($(this))
     });
@@ -102,32 +81,10 @@ function updateLightElement(object) {
     if ($('#' + object['idx']).find('.status').children().html() != object['Status']) {
         $('#' + object['idx']).find('.status').children().html(object['Status'])
         if (object['Status'] == 'On') {
-            if (object['Image'] == "Light") {
-                $('#' + object['idx']).find('i').removeClass('lampOff');
-                $('#' + object['idx']).find('i').addClass('lampOn');
-            }
-            else if (object['Image'] == "WallSocket") {
-                $('#' + object['idx']).find('i').removeClass('socketOff');
-                $('#' + object['idx']).find('i').addClass('socketOn');
-            }
-            else if (object['Image'] == "TV") {
-                $('#' + object['idx']).find('i').removeClass('tvOff');
-                $('#' + object['idx']).find('i').addClass('tvOn');
-            }
+            setState(object['idx'], object['Image'], 'On');
         }
         else {
-            if (object['Image'] == "Light") {
-                $('#' + object['idx']).find('i').removeClass('lampOn');
-                $('#' + object['idx']).find('i').addClass('lampOff');
-            }
-            else if (object['Image'] == "WallSocket") {
-                $('#' + object['idx']).find('i').removeClass('socketOn');
-                $('#' + object['idx']).find('i').addClass('socketOff');
-            }
-            else if (object['Image'] == "TV") {
-                $('#' + object['idx']).find('i').removeClass('tvOn');
-                $('#' + object['idx']).find('i').addClass('tvOff');
-            }
+            setState(object['idx'], object['Image'], 'Off');
         }
     }
     if ($('#' + object['idx']).find('.date').children().html() != object['Status']) {
@@ -137,7 +94,6 @@ function updateLightElement(object) {
 //------------------------------------------
 
 function elementCreator(object){
-    console.log(object['SwitchType']);
     if (object['SwitchType'] == 'On/Off'){
         addLightElement(object);
     }
