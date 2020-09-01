@@ -1,0 +1,17 @@
+{
+  "domoticz": 
+    {
+      "ip": "hostname",
+      "port": 8080,
+      "username": "user",
+      "password": "password"
+    },
+  "mysql":
+    {
+      "hostname": "hostname",
+      "username": "user",
+      "password": "password",
+      "port": 3306,
+      "database": "dbname"
+    }
+}

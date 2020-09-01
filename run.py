@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_file, flash
 from flask_socketio import SocketIO, emit
 from flask_fontawesome import FontAwesome
-import domoticzCommunication
+import domoticzCommunication, database
 import time, json
 
 app = Flask(__name__)
@@ -53,4 +53,5 @@ def clickBlind(data):
   getStatusOfFavoriteDevicesLight() #send updated statuses
 
 if __name__ == '__main__':
+  a = database.RemoteDatabase()
   socketio.run(app, host='0.0.0.0', port=82)

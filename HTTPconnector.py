@@ -6,7 +6,7 @@ class Connector:
   connectStatus = False
   def __init__(self):
     try:
-      domoticzConfig = json.loads(open('domoticzConfig.json', 'r').read())
+      domoticzConfig = json.loads(open('config.json', 'r').read())['domoticz']
       self.username = bytearray()
       self.username.extend(map(ord, domoticzConfig['username'])) #keep username encrypted in base64
       self.username = base64.b64encode(self.username).decode()

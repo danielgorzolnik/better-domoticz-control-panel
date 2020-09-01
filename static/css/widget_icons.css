@@ -58,6 +58,18 @@
     color: #ffffff;
 }
 
+.amplifierOn {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #005aad;
+}
+
+.amplifierOff {
+    padding-left: 5px;
+    font-size: 50px;
+    color: #ffffff;
+}
+
 .no_background {
     background-color: transparent;
 }

@@ -179,6 +179,22 @@ function updateLightElement(object) {
         $('#' + object['idx']).find('.date').children().html(object['LastUpdate'])
     }
 }
+
+//section for selector widget
+
+function addSelectorElement(object) {
+    var template = $('#lightTemplate').html();
+    template = template.replace("tempName", object['Name'])
+    template = template.replace("tempStatus", object['Status'])
+    template = template.replace("tempDate", object['LastUpdate'])
+    template = template.replace("tempIdx", object['idx'])
+    template = template.replace("tempIconIdx", 'icon' + object['idx'])
+    $('#switchRow').append(template);
+    setIconSetState(object['idx'], object['Image'], object['Status'])
+}
+
+//------------------------------------------
+
 //------------------------------------------
 
 function elementCreator(object){
@@ -194,9 +210,15 @@ function elementCreator(object){
     else if (object['SwitchType'] == 'Motion Sensor'){
         addMotionSensor(object);
     }
+    else if (object['SwitchType'] == 'Selector'){
+        addSelectorElement(object);
+    }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp'))
         addTemperatureElement(object);
+    }
+    else{
+        console.log(object);
     }
 }
 

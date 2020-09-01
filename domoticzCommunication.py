@@ -1,5 +1,5 @@
 import HTTPconnector
-import json
+import json, base64
 
 class DomoticzCommuniucation:
   connectStatus = False
@@ -25,8 +25,7 @@ class DomoticzCommuniucation:
       for device in data['result']:
         try:
           if device["Name"]: #filter devices only with name
-            #print(device)
-            output.append({ #append only specyfic values
+            tmpJson = { 
               "Name": device["Name"],
               "idx": device["idx"],
               "Status": device["Status"],
@@ -35,8 +34,10 @@ class DomoticzCommuniucation:
               "DimmerType": device["DimmerType"],
               "LastUpdate": device["LastUpdate"],
               "Image": device["Image"]
-              })
-        except: pass
+              }
+            if device["SwitchType"] == "Selector": tmpJson["LevelNames"] = base64.b64decode(device["LevelNames"].encode("utf-8")).decode("utf-8").split("|")
+            output.append(tmpJson) #append only specyfic values
+        except Exception as e: print (e)
       return output
 
   def getStatusOfFavoriteDevicesTemp(self):

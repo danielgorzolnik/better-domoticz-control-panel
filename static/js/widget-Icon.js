@@ -27,6 +27,9 @@ function setIcon(idx, name) {
         case 'Speaker':
             classes = 'fa fa-volume-up fa-3x'
             break
+        case 'Amplifier':
+            classes = 'fa fa-music fa-3x';
+            break;
         default:
             classes = 'fa fa-minus-square-o fa-3x'
             break;
@@ -51,6 +54,9 @@ function setState(idx, name, state) {
             break;
         case 'Speaker':
             classBase = 'speaker'
+            break;
+        case 'Amplifier':
+            classBase = 'amplifier'
             break;
         default:
             classBase = 'lamp'
