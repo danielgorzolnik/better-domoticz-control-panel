@@ -255,6 +255,8 @@ $(document).ready(function () {
     window.socket.on('getTempDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
         data.forEach(elementCreator);
+        // $('#switchRow').gridstrap();
+        // $('#sensorRow').gridstrap();
     });
 
     window.socket.on('updateLightDevice', function (msg) {

@@ -53,5 +53,5 @@ def clickBlind(data):
   getStatusOfFavoriteDevicesLight() #send updated statuses
 
 if __name__ == '__main__':
-  a = database.RemoteDatabase()
+  #a = database.RemoteDatabase()
   socketio.run(app, host='0.0.0.0', port=82)
