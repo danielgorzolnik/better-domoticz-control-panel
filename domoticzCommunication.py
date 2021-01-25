@@ -38,6 +38,19 @@ class DomoticzCommuniucation:
       orderValue = {"order": idList}
       self.__localDatabase.insertPositions("sceneRow", orderValue)
 
+  def __searchInDatabase(self, idx, positionType):
+    try:
+      positions = self.__localDatabase.getPositions(positionType)
+      found = False
+      for position in positions:
+        if position == idx:
+          found = True
+          break
+      return found
+    except Exception as e:
+      print(e)
+      return True
+    
   def changeMovingMode(self, value):
     self.movingMode = value
 
@@ -65,6 +78,10 @@ class DomoticzCommuniucation:
               "Image": device["Image"]
               }
             if device["SwitchType"] == "Selector": tmpJson["LevelNames"] = base64.b64decode(device["LevelNames"].encode("utf-8")).decode("utf-8").split("|")
+            if not self.__searchInDatabase(tmpJson["idx"], "switchRow"):
+              positions = self.__localDatabase.getPositions("switchRow")
+              positions.append(tmpJson["idx"])
+              self.__localDatabase.updatePositions("switchRow", {"order": positions})
             output.append(tmpJson) #append only specyfic values
         except Exception as e: print (e)
       return output
@@ -84,7 +101,11 @@ class DomoticzCommuniucation:
               "LastUpdate": device["LastUpdate"],
               "TypeImg": device["TypeImg"]
             })
-        except: pass
+          if not self.__searchInDatabase(device["idx"], "sensorRow"):
+            positions = self.__localDatabase.getPositions("sensorRow")
+            positions.append(device["idx"])
+            self.__localDatabase.updatePositions("sensorRow", {"order": positions})
+        except Exception as e: print (e)
       return output
 
   def getFavoriteScenes(self):
@@ -100,6 +121,10 @@ class DomoticzCommuniucation:
           "LastUpdate": scene["LastUpdate"],
           "Image": "Scene"
         })
+        if not self.__searchInDatabase(scene["idx"], "sceneRow"):
+          positions = self.__localDatabase.getPositions("sceneRow")
+          positions.append(scene["idx"])
+          self.__localDatabase.updatePositions("sceneRow", {"order": positions})
       return output
 
   def switchScene(self, idx, state):

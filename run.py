@@ -71,6 +71,7 @@ def widgetOrder(data):
 @socketio.on('clickScene', namespace='/desktop')
 def clickScene(data):
   domoticz.switchScene(int(data['idx']), True)
+  getStatusOfFavoriteDevicesLight()
 
 if __name__ == '__main__':
   a = domoticz.getFavoriteScenes()
