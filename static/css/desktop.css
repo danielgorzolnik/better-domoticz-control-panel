@@ -131,6 +131,33 @@ h3 {
     animation: pulsegreen 1.5s infinite;
 }
 
+.timeClock {
+    color: white;
+    font-size: 52px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+.timeSecondsClock {
+    color: white;
+    margin-top: 13px;
+    margin-left: 3px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.dateClock {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dayClock {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
 @keyframes pulsegreen {
     0% {
       background-color: rgba(0, 117, 31, 0.65);

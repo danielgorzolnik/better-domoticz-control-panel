@@ -264,6 +264,24 @@ function sendOrder(order){
     window.socket.emit('widgetOrder', order)
 }
 
+function updateClock(){
+    let days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+    let date = new Date();
+    let timeClock = date.getHours() + ":" + date.getMinutes();
+    let timeSecondsClock = date.getSeconds();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    if (day < 10) day = "0" + day;
+    if (month < 10) month = "0" + month;
+    if (timeSecondsClock < 10) timeSecondsClock = "0" + timeSecondsClock;
+    let dateClock = day + "." + month + "." + date.getFullYear();
+    let dayClock = days[date.getDay()];
+    $("#timeClock").html(timeClock);
+    $("#timeSecondsClock").html(timeSecondsClock);
+    $('#dateClock').html(dateClock);
+    $('#dayClock').html(dayClock);
+}
+
 $(document).ready(function () {
     $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     $('#switchRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
@@ -308,11 +326,15 @@ $(document).ready(function () {
 
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesLight')
-    }, 2000);
+    }, 3000);
 
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesTemp')
     }, 5000);
+
+    setInterval(function () {
+        updateClock()
+    }, 1000);
 
     getStatusOfAll();
 
