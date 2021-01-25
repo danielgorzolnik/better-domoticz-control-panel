@@ -31,6 +31,13 @@ class DomoticzCommuniucation:
       orderValue = {"order": idList}
       self.__localDatabase.insertPositions("sensorRow", orderValue)
 
+    if self.__localDatabase.getPositions("sceneRow") == None:
+      idList = []
+      for device in (self.getFavoriteScenes()):
+        idList.append(device["idx"])
+      orderValue = {"order": idList}
+      self.__localDatabase.insertPositions("sceneRow", orderValue)
+
   def changeMovingMode(self, value):
     self.movingMode = value
 
@@ -79,6 +86,32 @@ class DomoticzCommuniucation:
             })
         except: pass
       return output
+
+  def getFavoriteScenes(self):
+    data = self.connector.sendAndReceiveData('type=scenes&favorite=1')
+    if data == False: return False
+    else:
+      output = []
+      for scene in data['result']:
+        output.append({
+          "Name": scene["Name"],
+          "idx": scene["idx"],
+          "Type": scene["Type"],
+          "LastUpdate": scene["LastUpdate"],
+          "Image": "Scene"
+        })
+      return output
+
+  def switchScene(self, idx, state):
+    if not self.movingMode:
+      if state: state = 'On'
+      else: state = 'Off'
+      url = 'type=command&param=switchscene&idx=%s&switchcmd=%s' % (idx,  state)
+      data = self.connector.sendAndReceiveData(url)
+      if data: return True
+      else: return False
+    else:
+      return True
 
   def switchLight(self, idx, state):
     if not self.movingMode:

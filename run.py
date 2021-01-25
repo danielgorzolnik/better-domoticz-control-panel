@@ -28,6 +28,11 @@ def getStatusOfFavoriteDevicesLight():
   data = domoticz.getStatusOfFavoriteDevicesLight()
   emit('getLightDevice', {'data': json.dumps(data), 'order': localDatabase.getPositions("switchRow")})
 
+@socketio.on('getFavoriteScenes', namespace='/desktop')
+def getFavoriteScenes():
+  data = domoticz.getFavoriteScenes()
+  emit('getFavoriteScenes', {'data': json.dumps(data), 'order': localDatabase.getPositions("sceneRow")})
+
 @socketio.on('updateStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
   data = domoticz.getStatusOfFavoriteDevicesTemp()
@@ -57,10 +62,16 @@ def clickBlind(data):
 def widgetOrder(data):
   localDatabase.updatePositions("sensorRow", {"order": data["sensorRow"]})
   localDatabase.updatePositions("switchRow", {"order": data["switchRow"]})
+  localDatabase.updatePositions("sceneRow", {"order": data["sceneRow"]})
 
 @socketio.on('changeMovingMode', namespace='/desktop')
 def widgetOrder(data):
   domoticz.changeMovingMode(data['value'])
 
+@socketio.on('clickScene', namespace='/desktop')
+def clickScene(data):
+  domoticz.switchScene(int(data['idx']), True)
+
 if __name__ == '__main__':
+  a = domoticz.getFavoriteScenes()
   socketio.run(app, host='0.0.0.0', port=82)

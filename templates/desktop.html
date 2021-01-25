@@ -28,6 +28,8 @@
                 </div>
             </div>
         </div>
+        <div id="sceneRow" class="row" style="margin-top: 50px">
+        </div>
         <div id="switchRow" class="row" style="margin-top: 50px">
         </div>
         <div id="sensorRow" class="row" style="margin-top: 50px">
@@ -152,6 +154,21 @@
             </div>
         </div>
     </script>
-
+    <script id="sceneTemplate" type="text/template">
+        <div class="col-lg-4 widgetParent">
+            <div class="card card_react" id="tempIdx">
+                <ul class="list-inline">
+                    <i id="tempIconIdx" style="color: #9fc8fc;" aria-hidden="true"></i>
+                    <li class="name">tempName</li>
+                </ul>
+                <div class="status">
+                    <h3>tempStatus</h3>
+                </div>
+                <div class="date">
+                    <p>tempDate</p>
+                </div>
+            </div>
+        </div>
+    </script>
 </body>
 </html>

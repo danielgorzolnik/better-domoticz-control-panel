@@ -195,6 +195,26 @@ function addSelectorElement(object) {
 
 //------------------------------------------
 
+//section for scene widget
+
+function addSceneElement(object) {
+    var template = $('#sceneTemplate').html();
+    template = template.replace("tempName", object['Name'])
+    template = template.replace("tempStatus", "Scena")
+    template = template.replace("tempDate", object['LastUpdate'])
+    template = template.replace("tempIdx", 'scene' + object['idx'])
+    template = template.replace("tempIconIdx", 'iconscene' + object['idx'])
+    $('#sceneRow').append(template);
+    setIcon('scene' + object['idx'], object['Image'])
+    $('#scene' + object['idx'].toString()).bind('click', function() {
+        clickSceneElement($(this))
+    });
+}
+
+function clickSceneElement(object){
+    window.socket.emit('clickScene', {'idx': $(object).attr('id').split('scene')[1]})
+}
+
 //------------------------------------------
 
 function elementCreator(object){
@@ -214,8 +234,12 @@ function elementCreator(object){
         addSelectorElement(object);
     }
     else if (object['Type']){
-        if (object['Type'].startsWith('Temp'))
-        addTemperatureElement(object);
+        if (object['Type'].startsWith('Temp')){
+            addTemperatureElement(object);
+        }
+        else if (object['Type'].startsWith('Scene')){
+            addSceneElement(object);
+        }
     }
     else{
         console.log(object);
@@ -258,6 +282,7 @@ function settingsButton() {
 function getStatusOfAll() {
     window.socket.emit('getStatusOfFavoriteDevicesLight')
     window.socket.emit('getStatusOfFavoriteDevicesTemp')
+    window.socket.emit('getFavoriteScenes')
 }
 
 function sendOrder(order){
@@ -267,13 +292,17 @@ function sendOrder(order){
 function updateClock(){
     let days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
     let date = new Date();
-    let timeClock = date.getHours() + ":" + date.getMinutes();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
     let timeSecondsClock = date.getSeconds();
     let day = date.getDate();
     let month = date.getMonth() + 1;
+    if (hours < 10) hours = "0" + hours;
+    if (minutes < 10) minutes = "0" + minutes;
     if (day < 10) day = "0" + day;
     if (month < 10) month = "0" + month;
     if (timeSecondsClock < 10) timeSecondsClock = "0" + timeSecondsClock;
+    let timeClock = hours + ":" + minutes;
     let dateClock = day + "." + month + "." + date.getFullYear();
     let dayClock = days[date.getDay()];
     $("#timeClock").html(timeClock);
@@ -285,6 +314,7 @@ function updateClock(){
 $(document).ready(function () {
     $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     $('#switchRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
+    $('#sceneRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     namespace = '/desktop'
     window.socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {
         reconnection: false
@@ -303,6 +333,18 @@ $(document).ready(function () {
     });
 
     window.socket.on('getTempDevice', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        var order = msg['order']
+        order.forEach(function (idx){
+            data.forEach(function (element){
+                if (idx == parseInt(element['idx'])){
+                    elementCreator(element)
+                }
+            });
+        });
+    });
+
+    window.socket.on('getFavoriteScenes', function (msg) {
         var data = eval('(' + msg.data + ')');
         var order = msg['order']
         order.forEach(function (idx){

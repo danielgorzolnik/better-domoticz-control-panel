@@ -30,6 +30,9 @@ function setIcon(idx, name) {
         case 'Amplifier':
             classes = 'fa fa-music fa-3x';
             break;
+        case 'Scene':
+            classes = 'fa fa-clone fa-3x';
+            break;
         default:
             classes = 'fa fa-minus-square-o fa-3x'
             break;
