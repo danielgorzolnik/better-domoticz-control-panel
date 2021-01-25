@@ -48,6 +48,7 @@
     position: absolute;
     right: 10px;
     top: 0px;
+    padding-left: 50px;
     text-align: right;
     color: white;
     font-size: 10px;
@@ -56,10 +57,10 @@
 .card .date {
     position: absolute;
     right: 2px;
-    top: 80px;
+    top: 87px;
     text-align: right;
     color: white;
-    font-size: 12px;
+    font-size: 8px;
 }
 
 .card .slider {
