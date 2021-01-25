@@ -1,21 +1,15 @@
-import mysql.connector
+import sqlite3
 import json
 
-class RemoteDatabase:
+class LocalDatabase:
+    __databaseFile = "database/database.db"
     def __init__(self):
         if self.open():
             self.__create_tables()
 
     def open(self):
         try:
-            dbConfig = json.loads(open('config.json', 'r').read())['mysql']
-            self.database = mysql.connector.connect(
-                host = dbConfig['hostname'],
-                user = dbConfig['username'],
-                password = dbConfig['password'],
-                port = dbConfig['port'],
-                database = dbConfig['database']
-            )
+            self.database = sqlite3.connect(self.__databaseFile)
             self.cursor = self.database.cursor()
             return True
 
@@ -26,22 +20,51 @@ class RemoteDatabase:
     def close(self):
         pass
 
+    def getPositions(self, positionType):
+        try:
+            query = f"""
+                SELECT id, order_value 
+                FROM positions 
+                WHERE type="{positionType}" 
+            """
+            self.cursor.execute(query)
+            rawData = self.cursor.fetchone()
+            return json.loads(rawData[1])["order"]
+        except Exception as e:
+            print (e)
+            return None
+
+    def insertPositions(self, positionType, orderValue):
+        query = f"""
+            INSERT INTO positions(type, order_value)
+            VALUES('{positionType}', '{json.dumps(orderValue)}') 
+        """
+        self.cursor.execute(query)
+        self.database.commit()
+
+    def updatePositions(self, positionType, orderValue):
+        query = f"""
+        UPDATE positions SET
+        order_value = '{json.dumps(orderValue)}'
+        WHERE type = '{positionType}'
+        """
+        self.cursor.execute(query)
+        self.database.commit()
+
     def __create_tables(self):
         query = """
-            CREATE TABLE IF NOT EXISTS positions (
-                id int NOT NULL AUTO_INCREMENT,
-                position varchar(30) NOT NULL,
-                idx int NOT NULL,
-                PRIMARY KEY (id)
+            CREATE TABLE IF NOT EXISTS positions(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type TEXT NOT NULL,
+                order_value TEXT NOT NULL
             )
         """
         self.cursor.execute(query)
         query = """
             CREATE TABLE IF NOT EXISTS settings (
-                id int NOT NULL AUTO_INCREMENT,
-                rule varchar(30) NOT NULL,
-                value varchar(30) NOT NULL,
-                PRIMARY KEY (id)
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                value TEXT NOT NULL
             )
         """
         self.cursor.execute(query)

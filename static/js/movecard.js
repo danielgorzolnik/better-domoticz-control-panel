@@ -20,6 +20,7 @@ function enableMoving(){
 }
 
 function disableMoving(){
+    sendOrder(getOrderId());
     movingState = false;
     $('#sensorRow').data('gridstrap').$getCells().each(function(index) {
         $('#sensorRow').data('gridstrap').removeCell($(this))
@@ -31,5 +32,12 @@ function disableMoving(){
 }
 
 function getOrderId() {
-
+    var order = {'sensorRow': [], 'switchRow': []};
+    $('#sensorRow').data('gridstrap').$getCells().each(function( index ) {
+        order['sensorRow'].push($($(this)[0].innerHTML).attr("id"))
+    });
+    $('#switchRow').data('gridstrap').$getCells().each(function( index ) {
+        order['switchRow'].push($($(this)[0].innerHTML).attr("id"))
+    });
+    return order
 }

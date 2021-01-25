@@ -243,7 +243,8 @@ function elementUpdater(object){
 
 function moveButton(){
     if (movingState) disableMoving();
-    else enableMoving(); 
+    else enableMoving();
+    window.socket.emit('changeMovingMode', {"value": movingState})
 }
 
 function connectionButton(){
@@ -259,6 +260,10 @@ function getStatusOfAll() {
     window.socket.emit('getStatusOfFavoriteDevicesTemp')
 }
 
+function sendOrder(order){
+    window.socket.emit('widgetOrder', order)
+}
+
 $(document).ready(function () {
     $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     $('#switchRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
@@ -269,13 +274,26 @@ $(document).ready(function () {
 
     window.socket.on('getLightDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
-        data.forEach(elementCreator);
+        var order = msg['order']
+        order.forEach(function (idx){
+            data.forEach(function (element){
+                if (idx == parseInt(element['idx'])){
+                    elementCreator(element)
+                }
+            });
+        });
     });
 
     window.socket.on('getTempDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
-        data.forEach(elementCreator);
-        // $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
+        var order = msg['order']
+        order.forEach(function (idx){
+            data.forEach(function (element){
+                if (idx == parseInt(element['idx'])){
+                    elementCreator(element)
+                }
+            });
+        });
     });
 
     window.socket.on('updateLightDevice', function (msg) {

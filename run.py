@@ -8,7 +8,8 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 fa = FontAwesome(app)
 
-domoticz = domoticzCommunication.DomoticzCommuniucation()
+localDatabase = database.LocalDatabase()
+domoticz = domoticzCommunication.DomoticzCommuniucation(localDatabase)
 
 @app.route('/')
 def home():
@@ -20,12 +21,12 @@ def home():
 @socketio.on('getStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
   data = domoticz.getStatusOfFavoriteDevicesTemp()
-  emit('getTempDevice', {'data': json.dumps(data)})
+  emit('getTempDevice', {'data': json.dumps(data), 'order': localDatabase.getPositions("sensorRow")})
 
 @socketio.on('getStatusOfFavoriteDevicesLight', namespace='/desktop')
 def getStatusOfFavoriteDevicesLight():
   data = domoticz.getStatusOfFavoriteDevicesLight()
-  emit('getLightDevice', {'data': json.dumps(data)})
+  emit('getLightDevice', {'data': json.dumps(data), 'order': localDatabase.getPositions("switchRow")})
 
 @socketio.on('updateStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
@@ -52,6 +53,14 @@ def clickBlind(data):
   domoticz.changeCover(int(data['idx']), str(data['state']))
   getStatusOfFavoriteDevicesLight() #send updated statuses
 
+@socketio.on('widgetOrder', namespace='/desktop')
+def widgetOrder(data):
+  localDatabase.updatePositions("sensorRow", {"order": data["sensorRow"]})
+  localDatabase.updatePositions("switchRow", {"order": data["switchRow"]})
+
+@socketio.on('changeMovingMode', namespace='/desktop')
+def widgetOrder(data):
+  domoticz.changeMovingMode(data['value'])
+
 if __name__ == '__main__':
-  #a = database.RemoteDatabase()
   socketio.run(app, host='0.0.0.0', port=82)

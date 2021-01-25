@@ -3,14 +3,36 @@ import json, base64
 
 class DomoticzCommuniucation:
   connectStatus = False
-  def __init__(self):
+  movingMode = False #if true, dont send click events to domoticz
+  __localDatabase = None
+  def __init__(self, database):
     try:
       self.connector = HTTPconnector.Connector()
       if self.connector.connectStatus:
         if self.checkingConnection():
           self.connectStatus = True
+          self.__localDatabase = database
+          self.__checkDatabaseOrder()
     except Exception as e:
       print(e)
+
+  def __checkDatabaseOrder(self):
+    if self.__localDatabase.getPositions("switchRow") == None:
+      idList = []
+      for device in (self.getStatusOfFavoriteDevicesLight()):
+        idList.append(device["idx"])
+      orderValue = {"order": idList}
+      self.__localDatabase.insertPositions("switchRow", orderValue)
+
+    if self.__localDatabase.getPositions("sensorRow") == None:
+      idList = []
+      for device in (self.getStatusOfFavoriteDevicesTemp()):
+        idList.append(device["idx"])
+      orderValue = {"order": idList}
+      self.__localDatabase.insertPositions("sensorRow", orderValue)
+
+  def changeMovingMode(self, value):
+    self.movingMode = value
 
   def checkingConnection(self): #checking communication with domoticz
     data = self.connector.sendAndReceiveData('type=command&param=getversion')
@@ -59,32 +81,43 @@ class DomoticzCommuniucation:
       return output
 
   def switchLight(self, idx, state):
-    if state: state = 'On'
-    else: state = 'Off'
-    url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
-    data = self.connector.sendAndReceiveData(url)
-    if data: return True
-    else: return False
+    if not self.movingMode:
+      if state: state = 'On'
+      else: state = 'Off'
+      url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
+      data = self.connector.sendAndReceiveData(url)
+      if data: return True
+      else: return False
+    else:
+      return True
 
   def toggleLight(self, idx):
-    url = 'type=command&param=switchlight&idx=%d&switchcmd=Toggle' % idx
-    data = self.connector.sendAndReceiveData(url)
-    if data: return True
-    else: return False
+    if not self.movingMode:
+      url = 'type=command&param=switchlight&idx=%d&switchcmd=Toggle' % idx
+      data = self.connector.sendAndReceiveData(url)
+      if data: return True
+      else: return False
+    else:
+      return True
 
   def changeDimmer(self, idx, value):
-    url = 'type=command&param=switchlight&idx=%d&switchcmd=Set Level&level=%d' % (idx, value)
-    url = url.replace(' ', '%20')
-    data = self.connector.sendAndReceiveData(url)
-    if data: return True
-    else: return False
+    if not self.movingMode:
+      url = 'type=command&param=switchlight&idx=%d&switchcmd=Set Level&level=%d' % (idx, value)
+      url = url.replace(' ', '%20')
+      data = self.connector.sendAndReceiveData(url)
+      if data: return True
+      else: return False
+    else:
+      return True
 
   def changeCover(self, idx, state):
-    print(state)
-    if state == 'up': state = 'Off'
-    elif state == 'stop': state = 'Stop'
-    elif state == 'down': state = 'On'
-    url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
-    data = self.connector.sendAndReceiveData(url)
-    if data: return True
-    else: return False
+    if self.movingMode:
+      if state == 'up': state = 'Off'
+      elif state == 'stop': state = 'Stop'
+      elif state == 'down': state = 'On'
+      url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
+      data = self.connector.sendAndReceiveData(url)
+      if data: return True
+      else: return False
+    else:
+      return True
