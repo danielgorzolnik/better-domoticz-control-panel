@@ -241,7 +241,27 @@ function elementUpdater(object){
     }
 }
 
+function moveButton(){
+    if (movingState) disableMoving();
+    else enableMoving(); 
+}
+
+function connectionButton(){
+    console.log("connection button!")
+}
+
+function settingsButton() {
+    console.log("settings button!")
+}
+
+function getStatusOfAll() {
+    window.socket.emit('getStatusOfFavoriteDevicesLight')
+    window.socket.emit('getStatusOfFavoriteDevicesTemp')
+}
+
 $(document).ready(function () {
+    $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
+    $('#switchRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     namespace = '/desktop'
     window.socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {
         reconnection: false
@@ -255,8 +275,7 @@ $(document).ready(function () {
     window.socket.on('getTempDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
         data.forEach(elementCreator);
-        // $('#switchRow').gridstrap();
-        // $('#sensorRow').gridstrap();
+        // $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     });
 
     window.socket.on('updateLightDevice', function (msg) {
@@ -277,9 +296,8 @@ $(document).ready(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesTemp')
     }, 5000);
 
-    window.socket.emit('getStatusOfFavoriteDevicesLight')
-    window.socket.emit('getStatusOfFavoriteDevicesTemp')
-    
+    getStatusOfAll();
+
     $(document).on('input', '#slider', function() {
         console.log( $(this).val() );
     });

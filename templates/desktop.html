@@ -15,6 +15,21 @@
         </div>
         <div id="sensorRow" class="row" style="margin-top: 50px">
         </div>
+        <div id="panelRow" class="row" style="margin-top: 50px">
+            <div class="col-lg-4">
+                <div class="card card_react_noclick no_move">
+                    <ul class="list-inline">
+                        <i style="color: white;" aria-hidden="true" class="fa fa-cogs fa-3x"></i>
+                        <li class="name">Ustawienia</li>
+                    </ul>
+                    <div class="SettingButtons">
+                        <button class="btn no_background" onclick="connectionButton()" type="submit"><i class="fa fa-link fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                        <button class="btn no_background" onclick="moveButton()" type="submit"><i class="fa fa-arrows-alt fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                        <button class="btn no_background" onclick="settingsButton()" type="submit"><i class="fa fa-cog fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
@@ -26,7 +41,7 @@
     <script src="{{ url_for('static', filename='js/movecard.js') }}"></script>
     <!-- LIGHT -->
     <script id="lightTemplate" type="text/template">
-        <div class="col-lg-4">
+        <div class="col-lg-4 widgetParent">
             <div class="card card_react" id="tempIdx">
                 <ul class="list-inline">
                     <i id="tempIconIdx" aria-hidden="true"></i>
@@ -43,7 +58,7 @@
     </script>
     <!-- DIMMER -->
     <script id="dimmerTemplate" type="text/template">
-        <div class="col-lg-4">
+        <div class="col-lg-4 widgetParent">
             <div class="card card_react_noclick" id="tempIdx" onclick="">
                 <p style="display: none;"></p>
                 <ul class="list-inline">
@@ -66,7 +81,7 @@
     </script>
     <!-- BLINDS -->
     <script id="blindTemplate" type="text/template">
-        <div class="col-lg-4">
+        <div class="col-lg-4 widgetParent">
             <div class="card card_react_noclick" id="tempIdx">
                 <ul class="list-inline">
                     <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
@@ -88,7 +103,7 @@
     </script>
     <!-- TEMPERATURE -->
     <script id="sensorTemplate" type="text/template">
-        <div class="col-lg-4">
+        <div class="col-lg-4 widgetParent">
             <div class="card card_react_noclick" id="tempIdx">
                 <ul class="list-inline">
                     <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
@@ -105,7 +120,7 @@
     </script>
     <!-- SELECTOR -->
     <script id="selectorTemplate" type="text/template">
-        <div class="col-lg-4">
+        <div class="col-lg-4 widgetParent">
             <div class="card card_react_noclick" id="tempIdx">
                 <ul class="list-inline">
                     <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>

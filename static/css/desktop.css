@@ -82,6 +82,16 @@
     width: 65%;
 }
 
+.card .settingButtons {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    text-align: right;
+    color: white;
+    font-size: 12px;
+    width: 100%;
+}
+
 .list-inline {
     margin-bottom: 0 !important;
 }
@@ -115,4 +125,20 @@ h3 {
     cursor: pointer;
     -webkit-transition: background 0.15s ease-in-out;
     transition: background 0.15s ease-in-out;
+  }
+
+.pulsegreen {
+    animation: pulsegreen 1.5s infinite;
+}
+
+@keyframes pulsegreen {
+    0% {
+      background-color: rgba(0, 117, 31, 0.65);
+    }
+    50% {
+      background-color: rgba(0, 117, 31, 0.15);
+    }
+    100% {
+      background-color: rgba(0, 117, 31, 0.65);
+    }
   }
