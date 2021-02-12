@@ -1,46 +1,47 @@
 import HTTPconnector
 import json, base64
+import database
 
 class DomoticzCommuniucation:
   connectStatus = False
   movingMode = False #if true, dont send click events to domoticz
-  __localDatabase = None
-  def __init__(self, database):
+  def __init__(self):
     try:
       self.connector = HTTPconnector.Connector()
       if self.connector.connectStatus:
         if self.checkingConnection():
           self.connectStatus = True
-          self.__localDatabase = database
           self.__checkDatabaseOrder()
     except Exception as e:
       print(e)
 
   def __checkDatabaseOrder(self):
-    if self.__localDatabase.getPositions("switchRow") == None:
+    localDatabase = database.LocalDatabase()
+    if localDatabase.getPositions("switchRow") == None:
       idList = []
       for device in (self.getStatusOfFavoriteDevicesLight()):
         idList.append(device["idx"])
       orderValue = {"order": idList}
-      self.__localDatabase.insertPositions("switchRow", orderValue)
+      localDatabase.insertPositions("switchRow", orderValue)
 
-    if self.__localDatabase.getPositions("sensorRow") == None:
+    if localDatabase.getPositions("sensorRow") == None:
       idList = []
       for device in (self.getStatusOfFavoriteDevicesTemp()):
         idList.append(device["idx"])
       orderValue = {"order": idList}
-      self.__localDatabase.insertPositions("sensorRow", orderValue)
+      localDatabase.insertPositions("sensorRow", orderValue)
 
-    if self.__localDatabase.getPositions("sceneRow") == None:
+    if localDatabase.getPositions("sceneRow") == None:
       idList = []
       for device in (self.getFavoriteScenes()):
         idList.append(device["idx"])
       orderValue = {"order": idList}
-      self.__localDatabase.insertPositions("sceneRow", orderValue)
+      localDatabase.insertPositions("sceneRow", orderValue)
 
   def __searchInDatabase(self, idx, positionType):
     try:
-      positions = self.__localDatabase.getPositions(positionType)
+      localDatabase = database.LocalDatabase()
+      positions = localDatabase.getPositions(positionType)
       found = False
       for position in positions:
         if position == idx:
@@ -66,6 +67,7 @@ class DomoticzCommuniucation:
       output = []
       for device in data['result']:
         try:
+          localDatabase = database.LocalDatabase()
           if device["Name"]: #filter devices only with name
             tmpJson = { 
               "Name": device["Name"],
@@ -79,9 +81,9 @@ class DomoticzCommuniucation:
               }
             if device["SwitchType"] == "Selector": tmpJson["LevelNames"] = base64.b64decode(device["LevelNames"].encode("utf-8")).decode("utf-8").split("|")
             if not self.__searchInDatabase(tmpJson["idx"], "switchRow"):
-              positions = self.__localDatabase.getPositions("switchRow")
+              positions = localDatabase.getPositions("switchRow")
               positions.append(tmpJson["idx"])
-              self.__localDatabase.updatePositions("switchRow", {"order": positions})
+              localDatabase.updatePositions("switchRow", {"order": positions})
             output.append(tmpJson) #append only specyfic values
         except Exception as e: print (e)
       return output
@@ -93,6 +95,7 @@ class DomoticzCommuniucation:
       output = []
       for device in data['result']:
         try:
+          localDatabase = database.LocalDatabase()
           output.append({
               "Name": device["Name"],
               "idx": device["idx"],
@@ -102,9 +105,9 @@ class DomoticzCommuniucation:
               "TypeImg": device["TypeImg"]
             })
           if not self.__searchInDatabase(device["idx"], "sensorRow"):
-            positions = self.__localDatabase.getPositions("sensorRow")
+            positions = localDatabase.getPositions("sensorRow")
             positions.append(device["idx"])
-            self.__localDatabase.updatePositions("sensorRow", {"order": positions})
+            localDatabase.updatePositions("sensorRow", {"order": positions})
         except Exception as e: print (e)
       return output
 
@@ -112,6 +115,7 @@ class DomoticzCommuniucation:
     data = self.connector.sendAndReceiveData('type=scenes&favorite=1')
     if data == False: return False
     else:
+      localDatabase = database.LocalDatabase()
       output = []
       for scene in data['result']:
         output.append({
@@ -122,9 +126,9 @@ class DomoticzCommuniucation:
           "Image": "Scene"
         })
         if not self.__searchInDatabase(scene["idx"], "sceneRow"):
-          positions = self.__localDatabase.getPositions("sceneRow")
+          positions = localDatabase.getPositions("sceneRow")
           positions.append(scene["idx"])
-          self.__localDatabase.updatePositions("sceneRow", {"order": positions})
+          localDatabase.updatePositions("sceneRow", {"order": positions})
       return output
 
   def switchScene(self, idx, state):
