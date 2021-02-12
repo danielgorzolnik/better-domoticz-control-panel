@@ -117,18 +117,21 @@ class DomoticzCommuniucation:
     else:
       localDatabase = database.LocalDatabase()
       output = []
-      for scene in data['result']:
-        output.append({
-          "Name": scene["Name"],
-          "idx": scene["idx"],
-          "Type": scene["Type"],
-          "LastUpdate": scene["LastUpdate"],
-          "Image": "Scene"
-        })
-        if not self.__searchInDatabase(scene["idx"], "sceneRow"):
-          positions = localDatabase.getPositions("sceneRow")
-          positions.append(scene["idx"])
-          localDatabase.updatePositions("sceneRow", {"order": positions})
+      try:
+        for scene in data['result']:
+          output.append({
+            "Name": scene["Name"],
+            "idx": scene["idx"],
+            "Type": scene["Type"],
+            "LastUpdate": scene["LastUpdate"],
+            "Image": "Scene"
+          })
+          if not self.__searchInDatabase(scene["idx"], "sceneRow"):
+            positions = localDatabase.getPositions("sceneRow")
+            positions.append(scene["idx"])
+            localDatabase.updatePositions("sceneRow", {"order": positions})
+      except:
+        pass
       return output
 
   def switchScene(self, idx, state):

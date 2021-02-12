@@ -7,34 +7,34 @@ function setIcon(idx, name) {
     let classes;
     switch (name) {
         case 'Light': 
-            classes = 'fa fa-lightbulb-o fa-3x';
+            classes = 'far fa-lightbulb fa-3x';
             break;
         case 'WallSocket': 
             classes = 'fa fa-plug fa-3x';
             break;
         case 'TV':
-            classes = 'fa fa-television fa-3x'
+            classes = 'fas fa-tv fa-3x'
             break;
         case 'Blinds':
-            classes = 'fa fa-align-justify fa-3x'
+            classes = 'fas fa-align-justify fa-3x'
             break;
         case 'temperature':
-            classes = 'fa fa-thermometer-half fa-3x'
+            classes = 'fas fa-thermometer-half fa-3x'
             break
         case 'Motion Sensor':
-            classes = 'fa fa-eye fa-3x'
+            classes = 'fas fa-running fa-3x'
             break
         case 'Speaker':
-            classes = 'fa fa-volume-up fa-3x'
+            classes = 'fas fa-volume-up fa-3x'
             break
         case 'Amplifier':
-            classes = 'fa fa-music fa-3x';
+            classes = 'fas fa-pager fa-3x';
             break;
         case 'Scene':
-            classes = 'fa fa-clone fa-3x';
+            classes = 'far fa-clone fa-3x';
             break;
         default:
-            classes = 'fa fa-minus-square-o fa-3x'
+            classes = 'far fa-question-circle fa-3x'
             break;
     }
     $('#icon' + idx.toString()).addClass(classes)

@@ -82,4 +82,4 @@ def clickScene(data):
 
 if __name__ == '__main__':
   a = domoticz.getFavoriteScenes()
-  socketio.run(app, host='0.0.0.0', port=80)
+  socketio.run(app, host='0.0.0.0', port=82)
