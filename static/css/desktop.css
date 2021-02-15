@@ -54,6 +54,12 @@
     font-size: 10px;
 }
 
+.card .card_dropdown {
+    position: absolute;
+    right: 6px;
+    top: 40px;
+}
+
 .card .date {
     position: absolute;
     right: 2px;

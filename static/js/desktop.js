@@ -183,14 +183,38 @@ function updateLightElement(object) {
 //section for selector widget
 
 function addSelectorElement(object) {
-    var template = $('#lightTemplate').html();
+    var template = $('#selectorTemplate').html();
     template = template.replace("tempName", object['Name'])
-    template = template.replace("tempStatus", object['Status'])
+    template = template.replace("tempStatus", object["LevelNames"][object["Level"]])
     template = template.replace("tempDate", object['LastUpdate'])
     template = template.replace("tempIdx", object['idx'])
     template = template.replace("tempIconIdx", 'icon' + object['idx'])
+    template = template.replace("tmpButtonText", object['LevelNames'][object['Level']])
+    template = template.replace("tmpDropdownIdx", 'dropdown' + object['idx'])
     $('#switchRow').append(template);
     setIconSetState(object['idx'], object['Image'], object['Status'])
+    fillSelectorElement(object['idx'], object['LevelNames'])
+}
+
+function fillSelectorElement(idx, levelNames){
+    let myId = '#dropdown' + idx.toString();
+    levelNames.forEach(function (levelName){
+        $(myId).append('<a class="dropdown-item" style="width:100% !important;" onclick="clickSelectorElement(this, ' + idx.toString() + ", '" + levelName + "')" + '">' + levelName +'</a>');
+    })
+}
+
+function clickSelectorElement(object, idx, levelName){
+    window.socket.emit('clickSelector', {'idx': idx, 'level': levelName})
+}
+
+function updateSelectorElement(object){
+    if ($('#' + object['idx']).find('.status').children().html() != object['LevelNames'][object['Level']]) {
+        $('#' + object['idx']).find('.status').children().html(object['LevelNames'][object['Level']])
+    }
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate'])
+        $('#' + object['idx']).find('.dropdown-toggle').html(object['LevelNames'][object['Level']])
+    }
 }
 
 //------------------------------------------
@@ -259,6 +283,9 @@ function elementUpdater(object){
     else if (object['SwitchType'] == 'Motion Sensor'){
         updateMotionSensor(object);
     }
+    else if (object['SwitchType'] == 'Selector'){
+        updateSelectorElement(object);
+    }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp'))
         updateTemperatureElement(object);
@@ -317,7 +344,7 @@ $(document).ready(function () {
     $('#sceneRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     namespace = '/desktop'
     window.socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {
-        reconnection: false
+        reconnection: true
     });
 
     window.socket.on('getLightDevice', function (msg) {

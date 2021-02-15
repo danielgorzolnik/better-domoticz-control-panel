@@ -176,13 +176,36 @@ class DomoticzCommuniucation:
       return True
 
   def changeCover(self, idx, state):
-    if self.movingMode:
+    if not self.movingMode:
       if state == 'up': state = 'Off'
       elif state == 'stop': state = 'Stop'
       elif state == 'down': state = 'On'
       url = 'type=command&param=switchlight&idx=%d&switchcmd=%s' % (idx, state)
       data = self.connector.sendAndReceiveData(url)
       if data: return True
+      else: return False
+    else:
+      return True
+
+  def changeSelector(self, idx, level):
+    if not self.movingMode:
+      data = self.getStatusOfFavoriteDevicesLight()
+      device = None
+      for dev in data:
+        if dev['idx'] == str(idx):
+          device = dev
+          break
+      if device:
+        levelId = -1
+        for levelName in enumerate(device['LevelNames']):
+          if levelName[1] == level:
+            levelId = levelName[0]
+        if levelId >= 0:
+          url = f'type=command&param=switchlight&idx={str(idx)}&switchcmd=Set%20Level&level={str(levelId)}'
+          data = self.connector.sendAndReceiveData(url)
+          if data: return True
+          else: return False
+        else: return False
       else: return False
     else:
       return True
