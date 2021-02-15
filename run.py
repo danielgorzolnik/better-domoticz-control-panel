@@ -48,6 +48,11 @@ def getStatusOfFavoriteDevicesLight():
   data = domoticz.getStatusOfFavoriteDevicesLight()
   emit('updateLightDevice', {'data': json.dumps(data)})
 
+@socketio.on('updateFavoriteScenes', namespace='/desktop')
+def updateFavoriteScenes():
+  data = domoticz.getFavoriteScenes()
+  emit('updateScenes', {'data': json.dumps(data)})
+
 @socketio.on('clickDeviceLight', namespace='/desktop')
 def clickDeviceLight(data):
   domoticz.switchLight(int(data['idx']), True if data['state'] == 'On' else False)
@@ -78,7 +83,7 @@ def widgetOrder(data):
 @socketio.on('clickScene', namespace='/desktop')
 def clickScene(data):
   domoticz.switchScene(int(data['idx']), True)
-  getStatusOfFavoriteDevicesLight()
+  updateFavoriteScenes()
 
 @socketio.on('clickSelector', namespace='/desktop')
 def clickSelector(data):

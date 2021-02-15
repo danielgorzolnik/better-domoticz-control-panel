@@ -239,6 +239,12 @@ function clickSceneElement(object){
     window.socket.emit('clickScene', {'idx': $(object).attr('id').split('scene')[1]})
 }
 
+function updateSceneElement(object){
+    if ($('#scene' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
+        $('#scene' + object['idx']).find('.date').children().html(object['LastUpdate']);
+    }
+}
+
 //------------------------------------------
 
 function elementCreator(object){
@@ -287,8 +293,12 @@ function elementUpdater(object){
         updateSelectorElement(object);
     }
     else if (object['Type']){
-        if (object['Type'].startsWith('Temp'))
-        updateTemperatureElement(object);
+        if (object['Type'].startsWith('Temp')){
+            updateTemperatureElement(object);
+        }
+        else if (object['Type'].startsWith('Scene')){
+            updateSceneElement(object);
+        }
     }
 }
 
@@ -393,12 +403,21 @@ $(document).ready(function () {
         data.forEach(elementUpdater);
     });
 
+    window.socket.on('updateScenes', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        data.forEach(elementUpdater);
+    });
+    
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesLight')
     }, 3000);
 
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesTemp')
+    }, 5000);
+
+    setInterval(function () {
+        window.socket.emit('updateFavoriteScenes')
     }, 5000);
 
     setInterval(function () {
