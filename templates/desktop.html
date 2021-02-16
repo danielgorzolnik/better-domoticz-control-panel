@@ -1,183 +1,183 @@
-﻿<html stye>
-<head>
-    <meta charset="UTF-8" />
-    <title>BDCP - Desktop</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/widget_icons.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.gridstrap.min.css') }}">
-</head>
-<body>
-    <div class="container-fluid" style="padding-left: 10%; padding-right: 10%;">
-        <div id="clockRow" class="row justify-content-lg-center">
-            <div class="col-lg-6">
-                <div class="card card_react_noclick no_move">
-                    <div class="row justify-content-lg-center">
-                        <div class="col-6 d-flex justify-content-center align-self-center">
-                            <p id="timeClock" class="timeClock"></p>
-                            <p id="timeSecondsClock" class="timeSecondsClock"></p></div>
-                        <div class="col-6 d-flex justify-content-center align-self-center">
-                            <div class="row justify-content-center" style="margin-left: 15%">
-                                <div id="dayClock" class="col-lg-12 text-center dayClock"></div>
-                                <div id="dateClock" class="col-lg-12 text-center dateClock"></div>
+﻿<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>BDCP - Desktop</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/widget_icons.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.gridstrap.min.css') }}">
+    </head>
+    <body>
+        <div class="container-fluid" style="padding-left: 10%; padding-right: 10%;">
+            <div id="clockRow" class="row justify-content-lg-center">
+                <div class="col-lg-6">
+                    <div class="card card_react_noclick no_move">
+                        <div class="row justify-content-lg-center">
+                            <div class="col-6 d-flex justify-content-center align-self-center">
+                                <p id="timeClock" class="timeClock"></p>
+                                <p id="timeSecondsClock" class="timeSecondsClock"></p></div>
+                            <div class="col-6 d-flex justify-content-center align-self-center">
+                                <div class="row justify-content-center" style="margin-left: 15%">
+                                    <div id="dayClock" class="col-lg-12 text-center dayClock"></div>
+                                    <div id="dateClock" class="col-lg-12 text-center dateClock"></div>
+                                </div>
                             </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div id="sceneRow" class="row" style="margin-top: 50px">
+            </div>
+            <div id="switchRow" class="row" style="margin-top: 50px">
+            </div>
+            <div id="sensorRow" class="row" style="margin-top: 50px">
+            </div>
+            <div id="panelRow" class="row" style="margin-top: 50px">
+                <div class="col-lg-4">
+                    <div class="card card_react_noclick no_move">
+                        <ul class="list-inline">
+                            <i style="color: white;" aria-hidden="true" class="fa fa-cogs fa-3x"></i>
+                            <li class="name">Ustawienia</li>
+                        </ul>
+                        <div class="SettingButtons">
+                            <button class="btn no_background" onclick="connectionButton()" type="submit"><i class="fa fa-link fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                            <button class="btn no_background" onclick="moveButton()" type="submit"><i class="fa fa-arrows-alt fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                            <button class="btn no_background" onclick="settingsButton()" type="submit"><i class="fa fa-cog fa-2x" style="color: white;" aria-hidden="true"></i></button>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="sceneRow" class="row" style="margin-top: 50px">
-        </div>
-        <div id="switchRow" class="row" style="margin-top: 50px">
-        </div>
-        <div id="sensorRow" class="row" style="margin-top: 50px">
-        </div>
-        <div id="panelRow" class="row" style="margin-top: 50px">
-            <div class="col-lg-4">
-                <div class="card card_react_noclick no_move">
+        <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.gridstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/widget-icon.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/movecard.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/desktop_elements.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
+        <!-- LIGHT -->
+        <script id="lightTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react" id="tempIdx">
                     <ul class="list-inline">
-                        <i style="color: white;" aria-hidden="true" class="fa fa-cogs fa-3x"></i>
-                        <li class="name">Ustawienia</li>
+                        <i id="tempIconIdx" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
                     </ul>
-                    <div class="SettingButtons">
-                        <button class="btn no_background" onclick="connectionButton()" type="submit"><i class="fa fa-link fa-2x" style="color: white;" aria-hidden="true"></i></button>
-                        <button class="btn no_background" onclick="moveButton()" type="submit"><i class="fa fa-arrows-alt fa-2x" style="color: white;" aria-hidden="true"></i></button>
-                        <button class="btn no_background" onclick="settingsButton()" type="submit"><i class="fa fa-cog fa-2x" style="color: white;" aria-hidden="true"></i></button>
+                    <div class="status">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.gridstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/widget-icon.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/movecard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/desktop_elements.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
-    <!-- LIGHT -->
-    <script id="lightTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react" id="tempIdx">
-                <ul class="list-inline">
-                    <i id="tempIconIdx" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="date">
-                    <p>tempDate</p>
-                </div>
-            </div>
-        </div>
-    </script>
-    <!-- DIMMER -->
-    <script id="dimmerTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react_noclick" id="tempIdx" onclick="">
-                <p style="display: none;"></p>
-                <ul class="list-inline">
-                    <i id="tempIconIdx" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="slider">
-                    <div class="range-slider">
-                        <input id="tempSliderIdx" class="range-slider__range" type="range" value="50" min="0" max="100">
+        </script>
+        <!-- DIMMER -->
+        <script id="dimmerTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react_noclick" id="tempIdx" onclick="">
+                    <p style="display: none;"></p>
+                    <ul class="list-inline">
+                        <i id="tempIconIdx" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
+                    </ul>
+                    <div class="status">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="slider">
+                        <div class="range-slider">
+                            <input id="tempSliderIdx" class="range-slider__range" type="range" value="50" min="0" max="100">
+                        </div>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
                     </div>
                 </div>
-                <div class="date">
-                    <p>tempDate</p>
-                </div>
             </div>
-        </div>
-    </script>
-    <!-- BLINDS -->
-    <script id="blindTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react_noclick" id="tempIdx">
-                <ul class="list-inline">
-                    <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="buttons">
-                    <button id="tempDownIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-down fa-2x" style="color: white" aria-hidden="true"></i></button>
-                    <button id="tempStopIdx" class="btn no_background" type="submit"><i class="fa fa-stop fa-2x" style="color: white" aria-hidden="true"></i></button>
-                    <button id="tempUpIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-up fa-2x" style="color: white" aria-hidden="true"></i></button>
-                </div>
-                <div class="date">
-                    <p>tempDate</p>
-                </div>
-            </div>
-        </div>
-    </script>
-    <!-- TEMPERATURE -->
-    <script id="sensorTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react_noclick" id="tempIdx">
-                <ul class="list-inline">
-                    <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status text-wrap">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="date">
-                    <p>tempDate</p>
-                </div>
-            </div>
-        </div>
-    </script>
-    <!-- SELECTOR -->
-    <script id="selectorTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react_noclick" id="tempIdx">
-                <ul class="list-inline">
-                    <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="dropdown card_dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        tmpButtonText
-                    </button>
-                    <div id="tmpDropdownIdx" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        </script>
+        <!-- BLINDS -->
+        <script id="blindTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react_noclick" id="tempIdx">
+                    <ul class="list-inline">
+                        <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
+                    </ul>
+                    <div class="status">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="buttons">
+                        <button id="tempDownIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-down fa-2x" style="color: white" aria-hidden="true"></i></button>
+                        <button id="tempStopIdx" class="btn no_background" type="submit"><i class="fa fa-stop fa-2x" style="color: white" aria-hidden="true"></i></button>
+                        <button id="tempUpIdx" class="btn no_background" type="submit"><i class="fa fa-angle-double-up fa-2x" style="color: white" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
                     </div>
                 </div>
-                <div class="date">
-                    <p>tempDate</p>
+            </div>
+        </script>
+        <!-- TEMPERATURE -->
+        <script id="sensorTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react_noclick" id="tempIdx">
+                    <ul class="list-inline">
+                        <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
+                    </ul>
+                    <div class="status text-wrap">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </script>
-    <!-- SCENE -->
-    <script id="sceneTemplate" type="text/template">
-        <div class="col-md-4 widgetParent">
-            <div class="card card_react" id="tempIdx">
-                <ul class="list-inline">
-                    <i id="tempIconIdx" style="color: #9fc8fc;" aria-hidden="true"></i>
-                    <li class="name">tempName</li>
-                </ul>
-                <div class="status">
-                    <h3>tempStatus</h3>
-                </div>
-                <div class="date">
-                    <p>tempDate</p>
+        </script>
+        <!-- SELECTOR -->
+        <script id="selectorTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react_noclick" id="tempIdx">
+                    <ul class="list-inline">
+                        <i id="tempIconIdx" style="color: white;" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
+                    </ul>
+                    <div class="status">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="dropdown card_dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            tmpButtonText
+                        </button>
+                        <div id="tmpDropdownIdx" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        </div>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </script>
-</body>
+        </script>
+        <!-- SCENE -->
+        <script id="sceneTemplate" type="text/template">
+            <div class="col-md-4 widgetParent">
+                <div class="card card_react" id="tempIdx">
+                    <ul class="list-inline">
+                        <i id="tempIconIdx" style="color: #9fc8fc;" aria-hidden="true"></i>
+                        <li class="name">tempName</li>
+                    </ul>
+                    <div class="status">
+                        <h3>tempStatus</h3>
+                    </div>
+                    <div class="date">
+                        <p>tempDate</p>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </body>
 </html>

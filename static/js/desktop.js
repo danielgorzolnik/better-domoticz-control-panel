@@ -64,7 +64,7 @@ function connectionButton(){
 }
 
 function settingsButton() {
-    console.log("settings button!")
+    window.location.replace(location.protocol + '//' + document.domain + ':' + location.port + '/settings')
 }
 
 function getStatusOfAll() {

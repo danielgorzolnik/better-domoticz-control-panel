@@ -17,6 +17,13 @@ def home():
   else: 
     return render_template('offline.html')
 
+@app.route('/settings')
+def settings():
+  if domoticz.connectStatus:
+    return render_template('settings.html')
+  else: 
+    return render_template('offline.html')
+
 @socketio.on('getStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
   data = domoticz.getStatusOfFavoriteDevicesTemp()
