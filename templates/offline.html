@@ -1,9 +1,25 @@
 <html>
     <head>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/widget_icons.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/jquery.gridstrap.min.css') }}">
         <title>Offline</title>
     </head>
     <body>
-        <center><p>Cant't connect to domoticz...</p></center>
-    </body>
+        <div class="container">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Błąd połaczenia!</h4>
+                <p>Nie można nawiązać połączenia z bazą danych.</p>
+                <button type="button" class="btn btn-warning" onclick="window.location.href='/settings'">Ustawienia</button>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/libs/jquery-3.5.1.slim.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/jquery.gridstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/socket.io.js') }}"></script>
 </html>
