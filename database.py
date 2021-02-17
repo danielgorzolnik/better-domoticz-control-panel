@@ -52,7 +52,7 @@ class LocalDatabase:
         self.cursor.execute(query)
         self.database.commit()
 
-    def getConfig(self, name){
+    def getConfig(self, name):
         query = f"""
             SELECT value FROM settings WHERE name="{name}"
         """
@@ -62,9 +62,9 @@ class LocalDatabase:
             return rawData[0]
         else:
             return None
-    }
+    
 
-    def updateConfig(self, name, value)[
+    def updateConfig(self, name, value):
         try:
             query=f"""
                 UPDATE settings SET value='{value}' WHERE name='{name}'
@@ -75,7 +75,7 @@ class LocalDatabase:
         except Exception as e:
             print(e)
             return False
-    ]
+    
 
     def __is_config(self, name):
         try:
