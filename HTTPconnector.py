@@ -14,7 +14,6 @@ class Connector:
 
   def __init__(self):
     try:
-      domoticzConfig = json.loads(open('config.json', 'r').read())['domoticz']
       self.reloadConnectionParams()
       self.connectStatus = self.__checkConnection()
       if (not self.connectStatus):

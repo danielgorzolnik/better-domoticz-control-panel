@@ -2,6 +2,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>BDCP - Settings</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/jquery.gridstrap.min.css') }}">
@@ -11,6 +12,7 @@
 
     <body>
         <div class="container">
+            <button type="button" class="btn btn-danger" id="backButton">Wróć do panelu</button>
             <div class="alert alert-success" role="alert" id="successDBAlert" style="display:none;">
                 Pomyślnie zapisano dane w bazie danych!
             </div>

@@ -1,3 +1,7 @@
+$("#backButton").click(function sendConfg(){
+    window.location.replace(location.protocol + '//' + document.domain + ':' + location.port + '/')
+});
+
 $("#configButton").click(function sendConfg(){
     data = {
         'controller_ip': $('#domoticzAddress').val(),
