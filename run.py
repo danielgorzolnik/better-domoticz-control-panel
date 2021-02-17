@@ -81,7 +81,7 @@ def widgetOrder(data):
   localDatabase.updatePositions("sensorRow", {"order": data["sensorRow"]})
   localDatabase.updatePositions("switchRow", {"order": data["switchRow"]})
   localDatabase.updatePositions("sceneRow", {"order": data["sceneRow"]})
-  localDatabase = close()
+  localDatabase.close()
 
 @socketio.on('changeMovingMode', namespace='/desktop')
 def widgetOrder(data):
