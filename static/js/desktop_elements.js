@@ -12,7 +12,7 @@ function addMotionSensor(object){
 }
 
 function updateMotionSensor(object){
-    if ($('#' + object['idx']).find('.status').children().html() != object['Data']) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
         $('#' + object['idx']).find('.status').children().html(object['Data']);
         $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
         setState(object['idx'], object['SwitchType'], object['Status'])
@@ -37,7 +37,7 @@ function addTemperatureElement(object){
 
 function updateTemperatureElement(object){
     sensorData = object['Data'].replace("C", "°C").replace(",", " ").replace(",", " ");
-    if ($('#' + object['idx']).find('.status').children().html() != sensorData) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
         $('#' + object['idx']).find('.status').children().html(sensorData);
         $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
     }
@@ -78,7 +78,7 @@ function clickBlindElement(object, direction){
 }
 
 function updateBlindElement(object){
-    if ($('#' + object['idx']).find('.status').children().html() != object['Status']) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
         $('#' + object['idx']).find('.status').children().html(object['Status']);
         $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
     }
@@ -124,7 +124,7 @@ function clickDimmerElement(object) {
 
 function updateDimmerElement(object){
     parent = $('#'+ object['idx'].toString())
-    if (parent.find('p').html() != object['Status'])
+    if (parent.find('.date').children().html() != object['LastUpdate'])
     {
         parent.find('p').html(object['Status'])
         if (object['Status'] == 'Off') {
@@ -166,7 +166,7 @@ function clickLightElement(object) {
 }
 
 function updateLightElement(object) {
-    if ($('#' + object['idx']).find('.status').children().html() != object['Status']) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
         $('#' + object['idx']).find('.status').children().html(object['Status'])
         if (object['Status'] == 'On') {
             setState(object['idx'], object['Image'], 'On');
