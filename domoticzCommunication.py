@@ -51,6 +51,7 @@ class DomoticzCommuniucation:
     
   def reloadConnection(self):
     self.connector.reloadConnectionParams()
+    self.__checkDatabaseOrder()
 
   def checkConnection(self):
     return self.connector.connectStatus
