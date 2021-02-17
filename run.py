@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, emit
 from flask_fontawesome import FontAwesome
 import domoticzCommunication, database
 import time, json
+import utils
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -14,17 +15,14 @@ domoticz = domoticzCommunication.DomoticzCommuniucation()
 
 @app.route('/')
 def home():
-  if domoticz.connectStatus:
+  if domoticz.checkConnection():
     return render_template('desktop.html')
   else: 
     return render_template('offline.html')
 
 @app.route('/settings')
 def settings():
-  if domoticz.connectStatus:
-    return render_template('settings.html')
-  else: 
-    return render_template('offline.html')
+  return render_template('settings.html')
 
 #################### DESKTOP NAMESPACE ####################
 
@@ -112,11 +110,20 @@ def getFullConfig():
 @socketio.on('sendConfig', namespace='/settings')
 def getFullConfig(data):
   localDatabase = database.LocalDatabase()
+  noHash = False
   if data['controller_password'] == 'HaHa! No way...':
+    noHash = True
     data['controller_password'] = localDatabase.getConfig('controller_password')
   for configName in data:
-    localDatabase.updateConfig(configName, data[configName])
+    if configName == 'controller_password':
+      if (noHash):
+        localDatabase.updateConfig(configName, data[configName])
+      else:
+        localDatabase.updateConfig(configName, utils.hashText(data[configName]))
+    else:
+      localDatabase.updateConfig(configName, data[configName])
   localDatabase.close()
+  domoticz.reloadConnection()
 
 
 if __name__ == '__main__':

@@ -3,15 +3,12 @@ import json, base64
 import database
 
 class DomoticzCommuniucation:
-  connectStatus = False
   movingMode = False #if true, dont send click events to domoticz
   def __init__(self):
     try:
       self.connector = HTTPconnector.Connector()
       if self.connector.connectStatus:
-        if self.checkingConnection():
-          self.connectStatus = True
-          self.__checkDatabaseOrder()
+        self.__checkDatabaseOrder()
     except Exception as e:
       print(e)
 
@@ -52,13 +49,14 @@ class DomoticzCommuniucation:
       print(e)
       return True
     
+  def reloadConnection(self):
+    self.connector.reloadConnectionParams()
+
+  def checkConnection(self):
+    return self.connector.connectStatus
+
   def changeMovingMode(self, value):
     self.movingMode = value
-
-  def checkingConnection(self): #checking communication with domoticz
-    data = self.connector.sendAndReceiveData('type=command&param=getversion')
-    if data == False: return False
-    else: return True
 
   def getStatusOfFavoriteDevicesLight(self):
     data = self.connector.sendAndReceiveData('type=devices&used=true&filter=light&favorite=1')

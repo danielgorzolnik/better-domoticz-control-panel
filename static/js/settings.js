@@ -6,6 +6,10 @@ $("#configButton").click(function sendConfg(){
         'controller_password': $('#domoticzPassword').val()
     }
     window.socket.emit('sendConfig', data)
+    $("#successDBAlert").show()
+    setTimeout(function () {
+        $("#successDBAlert").hide()
+    }, 2000);
 });
 
 $(document).ready(function () { 
