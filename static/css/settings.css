@@ -1,0 +1,16 @@
+.settings-box {
+    background-color: rgba(50, 50, 50, 0.4);
+}
+
+.settings-title {
+    color: white;
+}
+
+.settings-name {
+    color: white;
+    font-size: 120%;
+}
+
+.settings-description {
+    color: rgb(233, 233, 233);
+}

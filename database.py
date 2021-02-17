@@ -1,6 +1,14 @@
 import sqlite3
 import json
 
+default_config = [
+    ['controller_ip', '0.0.0.0'],
+    ['controller_port', '8080'],
+    ['controller_username', 'username'],
+    ['controller_password', 'password'],
+    ['panel_port', '80']
+]
+
 class LocalDatabase:
     __databaseFile = "database/database.db"
     def __init__(self):
@@ -52,6 +60,14 @@ class LocalDatabase:
         self.cursor.execute(query)
         self.database.commit()
 
+    def getFullConfig(self):
+        global default_config
+        fullConfig = {}
+        for config in default_config:
+            if not config[0] == 'controller_password':
+                fullConfig[config[0]] = self.getConfig(config[0])
+        return fullConfig
+
     def getConfig(self, name):
         query = f"""
             SELECT value FROM settings WHERE name="{name}"
@@ -62,12 +78,11 @@ class LocalDatabase:
             return rawData[0]
         else:
             return None
-    
 
     def updateConfig(self, name, value):
         try:
             query=f"""
-                UPDATE settings SET value='{value}' WHERE name='{name}'
+                UPDATE settings SET value = '{value}' WHERE name = '{name}'
             """
             self.cursor.execute(query)
             self.database.commit()
@@ -93,13 +108,7 @@ class LocalDatabase:
             return False
 
     def __insert_default_config(self):
-        default_config = [
-            ['controller_ip', '0.0.0.0'],
-            ['controller_port', '8080'],
-            ['controller_username', 'username'],
-            ['controller_password', 'password'],
-            ['panel_port', '80']
-        ]
+        global default_config
         for config in default_config:
             if not self.__is_config(config[0]):
                 query = f"""

@@ -2,21 +2,82 @@
     <head>
         <meta charset="UTF-8" />
         <title>BDCP - Settings</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.gridstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/setting.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/jquery.gridstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     </head>
 
     <body>
         <div class="container">
-            <div> </div>
+            <div class="my-3 p-3 rounded box-shadow settings-box">
+                <h4 class="border-bottom border-gray pb-3 mb-0 settings-title">Połączenie z Domoticz</h4>
+                <div class="media text-muted pt-1 border-bottom border-gray ">
+                    <p class="media-body small lh-125 pb-2 mb-0 settings-description">
+                        <strong class="d-block settings-name">Adres</strong>
+                        Adres kontrolera Domoticz
+                    </p>
+                    <div class="form-group mx-sm-3 mb-1 mt-1">
+                        <input type="text" class="form-control" id="domoticzAddress" placeholder="Adres">
+                    </div>
+                </div>
+                <div class="media text-muted pt-1 border-bottom border-gray ">
+                    <p class="media-body small lh-125 pb-2 mb-0 settings-description">
+                        <strong class="d-block settings-name">Port</strong>
+                        Port HTTP kontrolera Domoticz
+                    </p>
+                    <div class="form-group mx-sm-3 mb-1 mt-1">
+                        <input type="text" class="form-control" id="domoticzPort" placeholder="Port">
+                    </div>
+                </div>
+                <div class="media text-muted pt-1 border-bottom border-gray ">
+                    <p class="media-body small lh-125 pb-2 mb-0 settings-description">
+                        <strong class="d-block settings-name">Użytkownik</strong>
+                        Nazwa użytkownika Domoticz
+                    </p>
+                    <div class="form-group mx-sm-3 mb-1 mt-1">
+                        <input type="text" class="form-control" id="domoticzUser" placeholder="Użytkownik">
+                    </div>
+                </div>
+                <div class="media text-muted pt-1 border-bottom border-gray ">
+                    <p class="media-body small lh-125 pb-2 mb-0 settings-description">
+                        <strong class="d-block settings-name">Hasło</strong>
+                        Hasło użytkownika Domoticz
+                    </p>
+                    <div class="form-group mx-sm-3 mb-1 mt-1">
+                        <input type="password" class="form-control" id="domoticzPassword" placeholder="Hasło">
+                    </div>
+
+
+                </div>
+                <div class="media text-muted pt-3">
+
+                    <p class="media-body small lh-125">
+                        <strong class="d-block text-gray-dark"></strong>
+                    </p>
+                    <button type="button" class="btn btn-success mx-sm-3" id="configButton">Zatwierdź</button>
+                </div>
+            </div>
+            <div class="my-3 p-3 mt-5 rounded box-shadow settings-box">
+                <h4 class="border-bottom border-gray pb-3 mb-0 settings-title">Ustawienia Panelu</h4>
+                <div class="media text-muted pt-1 border-bottom border-gray ">
+                    <p class="media-body small lh-125 pb-2 mb-0 settings-description">
+                        <strong class="d-block settings-name">Tło</strong>
+                        Zmiana tła aplikacji
+                    </p>
+                    <div class="form-group mx-sm-3 mb-1 mt-1">
+                        <input type="text" class="form-control" id="panelBackground" placeholder="Tło">
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/jquery.gridstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/jquery-3.5.1.slim.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/jquery.gridstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/libs/socket.io.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
     </body>
 </html>

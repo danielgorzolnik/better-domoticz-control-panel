@@ -10,6 +10,8 @@ fa = FontAwesome(app)
 
 domoticz = domoticzCommunication.DomoticzCommuniucation()
 
+#################### PAGE ROUTE ####################
+
 @app.route('/')
 def home():
   if domoticz.connectStatus:
@@ -23,6 +25,8 @@ def settings():
     return render_template('settings.html')
   else: 
     return render_template('offline.html')
+
+#################### DESKTOP NAMESPACE ####################
 
 @socketio.on('getStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
@@ -97,6 +101,23 @@ def clickSelector(data):
   domoticz.changeSelector(int(data['idx']), data['level'])
   getStatusOfFavoriteDevicesLight()
 
+#################### SETTINGS NAMESPACE ####################
+
+@socketio.on('getFullConfig', namespace='/settings')
+def getFullConfig():
+  localDatabse = database.LocalDatabase()
+  allSettings = localDatabse.getFullConfig()
+  emit('getFullConfig', {'data': json.dumps(allSettings)})
+
+@socketio.on('sendConfig', namespace='/settings')
+def getFullConfig(data):
+  localDatabase = database.LocalDatabase()
+  if data['controller_password'] == 'HaHa! No way...':
+    data['controller_password'] = localDatabase.getConfig('controller_password')
+  for configName in data:
+    localDatabase.updateConfig(configName, data[configName])
+  localDatabase.close()
+
+
 if __name__ == '__main__':
-  a = domoticz.getFavoriteScenes()
   socketio.run(app, host='0.0.0.0', port=82)
