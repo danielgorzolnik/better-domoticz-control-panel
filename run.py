@@ -52,6 +52,13 @@ def getFavoriteScenes():
   emit('getFavoriteScenes', {'data': json.dumps(data), 'order': localDatabase.getPositions("sceneRow")})
   localDatabase.close()
 
+@socketio.on('getFavoriteDevicesWeather', namespace='/desktop')
+def getFavoriteScenes():
+  localDatabase = database.LocalDatabase()
+  data = domoticz.getOfFavoriteDevicesWeather()
+  emit('getWeatherDevice', {'data': json.dumps(data), 'order': localDatabase.getPositions("weatherRow")})
+  localDatabase.close()
+
 @socketio.on('updateStatusOfFavoriteDevicesTemp', namespace='/desktop')
 def getStatusOfFavoriteDevicesTemp():
   data = domoticz.getStatusOfFavoriteDevicesTemp()
@@ -66,6 +73,11 @@ def getStatusOfFavoriteDevicesLight():
 def updateFavoriteScenes():
   data = domoticz.getFavoriteScenes()
   emit('updateScenes', {'data': json.dumps(data)})
+
+@socketio.on('updateStatusOfFavoriteDevicesWeather', namespace='/desktop')
+def getStatusOfFavoriteDevicesLight():
+  data = domoticz.getOfFavoriteDevicesWeather()
+  emit('updateWeatherDevice', {'data': json.dumps(data)})
 
 @socketio.on('clickDeviceLight', namespace='/desktop')
 def clickDeviceLight(data):

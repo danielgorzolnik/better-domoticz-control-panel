@@ -26,7 +26,7 @@ function updateMotionSensor(object){
 function addTemperatureElement(object){
     var template = $('#sensorTemplate').html();
     template = template.replace("tempName", object['Name']);
-    sensorData = object['Data'].replace("C", "°C").replace(",", " ").replace(",", " ");
+    sensorData = object['Data'].replace("C", "°C").replace(" ", "").replace(",", " ").replace(",", " ").replace(" hPa", "hPa").replace(" %", "%");
     template = template.replace("tempStatus", sensorData);
     template = template.replace("tempDate", object['LastUpdate']);
     template = template.replace("tempIdx", object['idx']);
@@ -246,3 +246,95 @@ function updateSceneElement(object){
 }
 
 //------------------------------------------
+
+//section for wind widget
+
+function addWindElement(object){
+    if (object["Speed"]){
+        var template = $('#sensorTemplate').html();
+        template = template.replace("tempName", object['Name']);
+        let sensorData = object["Speed"] + "KM/H\n" + object["Direction"]
+        template = template.replace("tempStatus", sensorData);
+        template = template.replace("tempDate", object['LastUpdate']);
+        template = template.replace("tempIdx", object['idx']);
+        template = template.replace("tempIconIdx", 'icon' + object['idx']);
+        $('#weatherRow').append(template);
+        setIcon(object['idx'], object['TypeImg']);
+    }
+}
+
+function updateWindElement(object){
+    if (object["Speed"]){
+        if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
+            let sensorData = object["Speed"] + "KM/H\n" + object["Direction"]
+            $('#' + object['idx']).find('.status').children().html(sensorData);
+            $('#' + object['idx']).find('.date').children().html(object['LastUpdate']);
+        }
+    }
+}
+
+//------------------------------------------
+
+//section for pushButton widget
+function addPushButtonElement(object) {
+    var template = $('#lightTemplate').html();
+    template = template.replace("tempName", object['Name'])
+    template = template.replace("tempStatus", object['Status'])
+    template = template.replace("tempDate", object['LastUpdate'])
+    template = template.replace("tempIdx", object['idx'])
+    template = template.replace("tempIconIdx", 'icon' + object['idx'])
+    $('#switchRow').append(template);
+    setIcon(object['idx'], object['Image'])
+    $('#' + object['idx'].toString()).bind('click', function() {
+        clickPushButtonElement(object)
+    });
+}
+
+function clickPushButtonElement(object) {
+    window.socket.emit('clickDeviceLight', { 'idx': object['idx'], 'state': 'On'})
+}
+
+function updatePushButtonElement(object) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate'])
+    }
+}
+
+//------------------------------------------
+
+//section for doorLock widget
+function addDoorLockElement(object) {
+    var template = $('#lightTemplate').html();
+    template = template.replace("tempName", object['Name'])
+    template = template.replace("tempStatus", object['Status'])
+    template = template.replace("tempDate", object['LastUpdate'])
+    template = template.replace("tempIdx", object['idx'])
+    template = template.replace("tempIconIdx", 'icon' + object['idx'])
+    $('#switchRow').append(template);
+    setIconSetState(object['idx'], object['Image'], object['Status'])
+    $('#' + object['idx'].toString()).bind('click', function() {
+        clickDoorLockElement($(this))
+    });
+}
+
+function clickDoorLockElement(object) {
+    let status = $(object).find('.status').children().html()
+    if (status == 'Unlocked') status = 'On'; //toggle device state 
+    else if (status == 'Locked') status = 'Off' //toggle device state 
+    window.socket.emit('clickDeviceLight', { 'idx': $(object).attr('id'), 'state': status})
+}
+
+function updateDoorLockElement(object) {
+    if ($('#' + object['idx']).find('.date').children().html() != object['LastUpdate']) {
+        $('#' + object['idx']).find('.status').children().html(object['Status'])
+        if (object['Status'] == 'Unlocked') {
+            setIconSetState(object['idx'], object['Image'], 'Unlocked');
+        }
+        else {
+            setIconSetState(object['idx'], object['Image'], 'Locked');
+        }
+    }
+    if ($('#' + object['idx']).find('.date').children().html() != object['Status']) {
+        $('#' + object['idx']).find('.date').children().html(object['LastUpdate'])
+    }
+}

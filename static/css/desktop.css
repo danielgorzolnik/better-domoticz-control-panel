@@ -30,7 +30,7 @@
 
 .card ul .name{
     padding-top: 7px;
-    font-size: 19px;
+    font-size: 18px;
     color: white;
     font-weight: bold;
 }
@@ -57,7 +57,8 @@
     padding-left: 50px;
     text-align: right;
     color: white;
-    font-size: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .card .card_dropdown {

@@ -33,6 +33,15 @@ function setIcon(idx, name) {
         case 'Scene':
             classes = 'far fa-clone fa-3x';
             break;
+        case 'wind':
+            classes = 'fas fa-wind fa-3x';
+            break;
+        case 'Push':
+            classes = 'fas fa-hockey-puck fa-3x text-white';
+            break;
+        case 'Door': 
+            classes = 'text-white fas fa-3x '; //icon for door is set in setstate
+            break;
         default:
             classes = 'far fa-question-circle fa-3x'
             break;
@@ -61,19 +70,34 @@ function setState(idx, name, state) {
         case 'Amplifier':
             classBase = 'amplifier'
             break;
+        case 'Door':
+            classBase = 'fa-door-'
+            break;
         default:
             classBase = 'lamp'
             break;
     }
     let not_normal;
     let normal;
-    if (state == 'Off') {
-        normal = classBase + 'Off'
-        not_normal = classBase + 'On'
+    if (state == "On" || state == "Off"){
+        if (state == 'Off') {
+            normal = classBase + 'Off'
+            not_normal = classBase + 'On'
+        }
+        else {
+            normal = classBase + 'On'
+            not_normal = classBase + 'Off'
+        }
     }
-    else {
-        normal = classBase + 'On'
-        not_normal = classBase + 'Off'
+    else if (state == "Locked" || state == "Unlocked"){
+        if (state == "Locked"){
+            normal = classBase + 'closed'
+            not_normal = classBase + 'open'
+        }
+        else {
+            normal = classBase + 'open'
+            not_normal = classBase + 'closed'
+        }
     }
     $('#icon' + idx.toString()).addClass(normal)
     $('#icon' + idx.toString()).removeClass(not_normal)
