@@ -17,6 +17,9 @@ function enableMoving(){
             else if ($(this).parent().parent().attr("id") == "sceneRow"){
                 $('#sceneRow').data('gridstrap').attachCell(($(this).parent()))
             }
+            else if ($(this).parent().parent().attr("id") == "weatherRow"){
+                $('#weatherRow').data('gridstrap').attachCell(($(this).parent()))
+            }
             this.classList.add("pulsegreen");
         }
     });
@@ -34,6 +37,9 @@ function disableMoving(){
     $('#sceneRow').data('gridstrap').$getCells().each(function(index) {
         $('#sceneRow').data('gridstrap').removeCell($(this))
     });
+    $('#weatherRow').data('gridstrap').$getCells().each(function(index) {
+        $('#sceneRow').data('gridstrap').removeCell($(this))
+    });
     getStatusOfAll();
 }
 
@@ -47,6 +53,9 @@ function getOrderId() {
     });
     $('#sceneRow').data('gridstrap').$getCells().each(function( index ) {
         order['sceneRow'].push($($(this)[0].innerHTML).attr("id").split("scene")[1])
+    });
+    $('#weatherRow').data('gridstrap').$getCells().each(function( index ) {
+        order['weatherRow'].push($($(this)[0].innerHTML).attr("id").split("scene")[1])
     });
     return order
 }

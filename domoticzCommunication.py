@@ -35,6 +35,13 @@ class DomoticzCommuniucation:
       orderValue = {"order": idList}
       localDatabase.insertPositions("sceneRow", orderValue)
 
+    if localDatabase.getPositions("weatherRow") == None:
+      idList = []
+      for device in (self.getOfFavoriteDevicesWeather()):
+        idList.append(device["idx"])
+      orderValue = {"order": idList}
+      localDatabase.insertPositions("weatherRow", orderValue)
+
   def __searchInDatabase(self, idx, positionType):
     try:
       localDatabase = database.LocalDatabase()
@@ -131,6 +138,32 @@ class DomoticzCommuniucation:
             localDatabase.updatePositions("sceneRow", {"order": positions})
       except:
         pass
+      return output
+
+  def getOfFavoriteDevicesWeather(self):
+    data = self.connector.sendAndReceiveData('type=devices&filter=wind&used=true&order=Name&favorite=1')
+    if data == False: return False
+    else:
+      localDatabase = database.LocalDatabase
+      output = []
+      try:
+        for sensor in data['result']:
+          output.append({
+            "Name": sensor["Name"],
+            "idx": sensor["idx"],
+            "Type": sensor["Type"],
+            "LastUpdate": sensor["LastUpdate"],
+            "TypeImg": sensor["TypeImg"],
+            "Speed": sensor["Speed"],
+            "Direction": sensor["DirectionStr"],
+            "Gust": sensor["Gust"]
+          })
+          if not self.__searchInDatabase(sensor["idx"], "weatherRow"):
+            positions = localDatabase.getPositions("weatherRow")
+            positions.append(sensor["idx"])
+            localDatabase.updatePositions("weatherRow", {"order": positions})
+      except Exception as e:
+        print(e)
       return output
 
   def switchScene(self, idx, state):

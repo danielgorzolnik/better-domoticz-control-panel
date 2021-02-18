@@ -14,6 +14,12 @@ function elementCreator(object){
     else if (object['SwitchType'] == 'Selector'){
         addSelectorElement(object);
     }
+    else if (object['SwitchType'] == "Push On Button"){
+        addPushButtonElement(object);
+    }
+    else if (object['SwitchType'] == "Door Lock"){
+        addDoorLockElement(object);
+    }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp')){
             addTemperatureElement(object);
@@ -21,9 +27,13 @@ function elementCreator(object){
         else if (object['Type'].startsWith('Scene')){
             addSceneElement(object);
         }
+        else if (object['Type'].startsWith('Wind')){
+            addWindElement(object);
+        }
+        else{
+        }
     }
     else{
-        console.log(object);
     }
 }
 
@@ -43,12 +53,21 @@ function elementUpdater(object){
     else if (object['SwitchType'] == 'Selector'){
         updateSelectorElement(object);
     }
+    else if (object['SwitchType'] == "Push On Button"){
+        updatePushButtonElement(object);
+    }
+    else if (object['SwitchType'] == "Door Lock"){
+        updateDoorLockElement(object);
+    }
     else if (object['Type']){
         if (object['Type'].startsWith('Temp')){
             updateTemperatureElement(object);
         }
         else if (object['Type'].startsWith('Scene')){
             updateSceneElement(object);
+        }
+        else if (object['Type'].startsWith('Wind')){
+            updateWindElement(object);
         }
     }
 }
@@ -71,6 +90,7 @@ function getStatusOfAll() {
     window.socket.emit('getStatusOfFavoriteDevicesLight')
     window.socket.emit('getStatusOfFavoriteDevicesTemp')
     window.socket.emit('getFavoriteScenes')
+    window.socket.emit('getFavoriteDevicesWeather')
 }
 
 function sendOrder(order){
@@ -103,6 +123,7 @@ $(document).ready(function () {
     $('#sensorRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     $('#switchRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     $('#sceneRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
+    $('#weatherRow').gridstrap({rearrangeOnDrag: false, swapMode: false, draggable : true, ragMouseoverThrottle: 20});
     namespace = '/desktop'
     window.socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace, {
         reconnection: true
@@ -144,6 +165,18 @@ $(document).ready(function () {
         });
     });
 
+    window.socket.on('getWeatherDevice', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        var order = msg['order']
+        order.forEach(function (idx){
+            data.forEach(function (element){
+                if (idx == parseInt(element['idx'])){
+                    elementCreator(element)
+                }
+            });
+        });
+    });
+
     window.socket.on('updateLightDevice', function (msg) {
         var data = eval('(' + msg.data + ')');
         data.forEach(elementUpdater);
@@ -158,6 +191,11 @@ $(document).ready(function () {
         var data = eval('(' + msg.data + ')');
         data.forEach(elementUpdater);
     });
+
+    window.socket.on('updateWeatherDevice', function (msg) {
+        var data = eval('(' + msg.data + ')');
+        data.forEach(elementUpdater);
+    });
     
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesLight')
@@ -165,11 +203,15 @@ $(document).ready(function () {
 
     setInterval(function () {
         window.socket.emit('updateStatusOfFavoriteDevicesTemp')
-    }, 5000);
+    }, 10000);
+
+    setInterval(function () {
+        window.socket.emit('updateStatusOfFavoriteDevicesWeather')
+    }, 10000);
 
     setInterval(function () {
         window.socket.emit('updateFavoriteScenes')
-    }, 5000);
+    }, 10000);
 
     setInterval(function () {
         updateClock()
