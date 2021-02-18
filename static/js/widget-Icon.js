@@ -42,6 +42,9 @@ function setIcon(idx, name) {
         case 'Door': 
             classes = 'text-white fas fa-3x '; //icon for door is set in setstate
             break;
+        case 'Fireplace': 
+            classes = 'fas fa-fire fa-3x ';
+            break;
         default:
             classes = 'far fa-question-circle fa-3x'
             break;
@@ -72,6 +75,9 @@ function setState(idx, name, state) {
             break;
         case 'Door':
             classBase = 'fa-door-'
+            break;
+        case 'Fireplace':
+            classBase = 'fire'
             break;
         default:
             classBase = 'lamp'

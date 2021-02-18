@@ -37,7 +37,7 @@ class DomoticzCommuniucation:
 
     if localDatabase.getPositions("weatherRow") == None:
       idList = []
-      for device in (self.getFavoriteWeather()):
+      for device in (self.getOfFavoriteDevicesWeather()):
         idList.append(device["idx"])
       orderValue = {"order": idList}
       localDatabase.insertPositions("weatherRow", orderValue)

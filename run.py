@@ -53,7 +53,7 @@ def getFavoriteScenes():
   localDatabase.close()
 
 @socketio.on('getFavoriteDevicesWeather', namespace='/desktop')
-def getFavoriteScenes():
+def getFavoriteWeather():
   localDatabase = database.LocalDatabase()
   data = domoticz.getOfFavoriteDevicesWeather()
   emit('getWeatherDevice', {'data': json.dumps(data), 'order': localDatabase.getPositions("weatherRow")})
