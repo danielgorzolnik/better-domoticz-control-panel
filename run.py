@@ -75,7 +75,7 @@ def updateFavoriteScenes():
   emit('updateScenes', {'data': json.dumps(data)})
 
 @socketio.on('updateStatusOfFavoriteDevicesWeather', namespace='/desktop')
-def getStatusOfFavoriteDevicesLight():
+def getStatusOfFavoriteDevicesWeather():
   data = domoticz.getOfFavoriteDevicesWeather()
   emit('updateWeatherDevice', {'data': json.dumps(data)})
 
